@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="eu.vmpay.owlquiz"
-		  xmlns:android="http://schemas.android.com/apk/res/android">
+		  xmlns:android="http://schemas.android.com/apk/res/android"
+		  android:versionCode="1"
+		  android:versionName="0.1.1">
 
 	<application
 		android:allowBackup="true"
