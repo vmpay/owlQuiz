@@ -8,8 +8,10 @@
 	<string name="timer_60">60 s</string>
 	<string name="timer_30">30 s</string>
 	<string name="timer_20">20 s</string>
-	<string name="btn_reset">reset</string>
 	<string name="btn_start">start</string>
 	<string name="btn_stop">stop</string>
+	<string name="btn_pause">pause</string>
 	<string name="tv_header">Header</string>
+
+	<string name="units_seconds">s</string>
 </resources>

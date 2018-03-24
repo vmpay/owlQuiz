@@ -2,14 +2,29 @@ package eu.vmpay.owlquiz
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import eu.vmpay.owlquiz.timer.TimerFragment
+import eu.vmpay.owlquiz.timer.TimerPresenter
+import eu.vmpay.owlquiz.utils.replaceFragmentInActivity
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity() {//, NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var timerPresenter: TimerPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        val timerFragment = supportFragmentManager.findFragmentById(R.id.contentFrame)
+                as TimerFragment? ?: TimerFragment.newInstance().also {
+            replaceFragmentInActivity(it, R.id.contentFrame)
+        }
+
+        timerPresenter = TimerPresenter(timerFragment)
+
+    }
+
 
 //        fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -22,7 +37,7 @@ class MainActivity : AppCompatActivity() {//, NavigationView.OnNavigationItemSel
 //        toggle.syncState()
 
 //        nav_view.setNavigationItemSelectedListener(this)
-    }
+//    }
 
 //    override fun onBackPressed() {
 //        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {

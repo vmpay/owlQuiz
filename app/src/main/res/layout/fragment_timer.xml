@@ -6,8 +6,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	app:layout_behavior="@string/appbar_scrolling_view_behavior"
-	tools:context="eu.vmpay.owlquiz.MainActivity"
-	tools:showIn="@layout/app_bar_main">
+	tools:context="eu.vmpay.owlquiz.MainActivity">
 
 	<RadioGroup
 		android:id="@+id/radioGroup"
@@ -76,7 +75,7 @@
 		android:background="@drawable/circle_shape"
 		android:indeterminate="false"
 		android:max="60"
-		android:progress="40"
+		android:progress="0"
 		android:progressDrawable="@drawable/circular_progress_bar"
 		app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -129,8 +128,8 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="@string/btn_reset"
-			tools:text="reset"/>
+			android:text="@string/btn_stop"
+			tools:text="stop"/>
 	</LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
