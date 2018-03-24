@@ -11,7 +11,7 @@
 	<string name="btn_start">start</string>
 	<string name="btn_stop">stop</string>
 	<string name="btn_pause">pause</string>
-	<string name="tv_header">Header</string>
+	<string name="tv_header">Timer</string>
 
 	<string name="units_seconds">s</string>
 </resources>

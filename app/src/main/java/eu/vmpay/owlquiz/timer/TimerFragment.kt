@@ -55,18 +55,21 @@ class TimerFragment : Fragment(), TimerContract.View, View.OnClickListener {
         when (view) {
             rb60 -> {
                 tvTimer.text = getString(timer_60)
-                presenter.setTimer(60)
-                progressBar.max = 60
+                presenter.setTimer(60000)
+                progressBar.progress = 0
+                progressBar.max = 60000
             }
             rb30 -> {
                 tvTimer.text = getString(timer_30)
-                presenter.setTimer(30)
-                progressBar.max = 30
+                presenter.setTimer(30000)
+                progressBar.progress = 0
+                progressBar.max = 30000
             }
             rb20 -> {
                 tvTimer.text = getString(timer_20)
-                presenter.setTimer(20)
-                progressBar.max = 20
+                presenter.setTimer(20000)
+                progressBar.progress = 0
+                progressBar.max = 20000
             }
             btnStart -> {
                 btnStart.text = if (presenter.isTimerStarted) getString(btn_start) else getString(btn_pause)
@@ -76,7 +79,7 @@ class TimerFragment : Fragment(), TimerContract.View, View.OnClickListener {
             btnReset -> {
                 presenter.resetTimer()
                 progressBar.progress = 0
-                tvTimer.text = "${progressBar.max} ${getString(units_seconds)}"
+                tvTimer.text = "${progressBar.max / 1000} ${getString(units_seconds)}"
                 btnStart.text = getString(btn_start)
                 setEnableRadioButtons(true)
             }
@@ -85,7 +88,7 @@ class TimerFragment : Fragment(), TimerContract.View, View.OnClickListener {
 
     override fun showProgress(secondsUntilFinished: Int, currentProgress: Int) {
         progressBar.progress = currentProgress
-        tvTimer.text = "$secondsUntilFinished ${getString(units_seconds)}"
+        tvTimer.text = "${(secondsUntilFinished / 100) / 10F} ${getString(units_seconds)}"
     }
 
     override fun showTimerFinished() {

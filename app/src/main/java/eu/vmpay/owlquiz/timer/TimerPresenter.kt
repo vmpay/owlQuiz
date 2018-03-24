@@ -14,9 +14,10 @@ class TimerPresenter(val timerView: TimerContract.View) : TimerContract.Presente
     private val TAG = "TimerPresenter"
 
     private var isStarted: Boolean = false
-    private var timerLength: Long = 60
+    private var timerLength: Long = 60000
     private var currentSecondsUntilFinished: Long = 0
     private lateinit var timer: CountDownTimer
+    private val TICK: Long = 10
 
     init {
         timerView.presenter = this
@@ -35,16 +36,18 @@ class TimerPresenter(val timerView: TimerContract.View) : TimerContract.Presente
             timer.cancel()
         } else {
             timer = object : CountDownTimer(
-                    if (currentSecondsUntilFinished == 0L) timerLength * 1000 + 1000
-                    else currentSecondsUntilFinished, 1000) {
+                    if (currentSecondsUntilFinished == 0L) timerLength + TICK
+                    else currentSecondsUntilFinished, TICK) {
                 override fun onTick(millisUntilFinished: Long) {
-                    if (millisUntilFinished / 1000 == 1L) {
+                    if (millisUntilFinished / TICK == 1L) {
+                        Log.d(TAG, "finished $millisUntilFinished")
                         currentSecondsUntilFinished = 0
                         isStarted = false
                         timerView.showTimerFinished()
                     } else {
+                        Log.d(TAG, "tick $millisUntilFinished")
                         currentSecondsUntilFinished = millisUntilFinished
-                        timerView.showProgress((millisUntilFinished / 1000 - 1).toInt(), (timerLength - millisUntilFinished / 1000 + 1).toInt())
+                        timerView.showProgress((millisUntilFinished - TICK).toInt(), (timerLength - millisUntilFinished + 2 * TICK).toInt())
                     }
                 }
 
