@@ -46,8 +46,10 @@ class TimerFragment : Fragment(), TimerContract.View, View.OnClickListener {
     }
 
     override fun onPause() {
-        btnStart.text = if (presenter.isTimerStarted) getString(btn_start) else getString(btn_pause)
-        if (presenter.isTimerStarted) presenter.startTimer()
+        if (presenter.isTimerStarted) {
+            presenter.startTimer()
+            btnStart.text = getString(btn_start)
+        }
         super.onPause()
     }
 
