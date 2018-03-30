@@ -21,11 +21,15 @@
 
 	</android.support.design.widget.AppBarLayout>
 
-	<fragment
-		android:id="@+id/preferenceFragment"
-		android:name="eu.vmpay.owlquiz.pref.PrefFragment"
+	<FrameLayout
+		android:id="@+id/contentFrame"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+		android:layout_height="match_parent"/>
+	<!--<fragment-->
+	<!--android:id="@+id/preferenceFragment"-->
+	<!--android:name="eu.vmpay.owlquiz.pref.PrefFragment"-->
+	<!--android:layout_width="match_parent"-->
+	<!--android:layout_height="match_parent"-->
+	<!--app:layout_behavior="@string/appbar_scrolling_view_behavior"/>-->
 
 </android.support.constraint.ConstraintLayout>

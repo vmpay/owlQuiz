@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory
 		android:title="@string/category_sound">
-		<SwitchPreference
+		<CheckBoxPreference
 			android:defaultValue="@bool/pref_timer_sound_notification_default"
 			android:icon="@drawable/ic_music_note_black_24dp"
 			android:key="@string/timer_sound_notification_key"
