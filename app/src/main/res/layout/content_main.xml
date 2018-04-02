@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <fragment android:id="@+id/fragment"
-		  android:name="eu.vmpay.owlquiz.timer.TimerFragment"
+		  android:name="eu.vmpay.owlquiz.activities.timer.TimerFragment"
 		  xmlns:android="http://schemas.android.com/apk/res/android"
 		  xmlns:app="http://schemas.android.com/apk/res-auto"
 		  xmlns:tools="http://schemas.android.com/tools"

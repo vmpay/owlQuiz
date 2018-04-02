@@ -1,5 +1,6 @@
 package eu.vmpay.owlquiz.utils
 
+import android.preference.PreferenceFragment
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -15,6 +16,14 @@ fun AppCompatActivity.replaceFragmentInActivity(fragment: Fragment, @IdRes frame
     supportFragmentManager.transact {
         replace(frameId, fragment)
     }
+}
+
+/**
+ * The `prefFragment` is added to the container view with id `frameId`. The operation is
+ * performed by the `fragmentManager`.
+ */
+fun AppCompatActivity.replaceFragmentInActivity(fragment: PreferenceFragment, @IdRes frameId: Int) {
+    fragmentManager.beginTransaction().replace(frameId, fragment).commit()
 }
 
 /**

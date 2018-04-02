@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.timer
+package eu.vmpay.owlquiz.activities.timer
 
 import eu.vmpay.owlquiz.BasePresenter
 import eu.vmpay.owlquiz.BaseView
@@ -18,7 +18,7 @@ interface TimerContract {
 
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter : BasePresenter<View> {
 
         fun setTimer(seconds: Long)
 
@@ -27,5 +27,6 @@ interface TimerContract {
         fun startTimer()
 
         fun resetTimer()
+
     }
 }

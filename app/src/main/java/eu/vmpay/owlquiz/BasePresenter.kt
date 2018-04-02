@@ -3,8 +3,10 @@ package eu.vmpay.owlquiz
 /**
  * Created by Andrew on 24/03/2018.
  */
-interface BasePresenter {
+interface BasePresenter<T> {
 
-    fun start()
+    fun takeView(view: T)
+
+    fun dropView()
 
 }
