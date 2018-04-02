@@ -1,10 +1,12 @@
 package eu.vmpay.owlquiz
 
 import android.content.Context
-import eu.vmpay.owlquiz.pref.PrefContract
-import eu.vmpay.owlquiz.pref.PrefPresenter
-import eu.vmpay.owlquiz.timer.TimerContract
-import eu.vmpay.owlquiz.timer.TimerPresenter
+import eu.vmpay.owlquiz.activities.pref.PrefContract
+import eu.vmpay.owlquiz.activities.pref.PrefPresenter
+import eu.vmpay.owlquiz.activities.timer.TimerContract
+import eu.vmpay.owlquiz.activities.timer.TimerPresenter
+import eu.vmpay.owlquiz.soundpool.SoundPlayer
+import eu.vmpay.owlquiz.soundpool.SoundPlayerContract
 
 /**
  * Created by Andrew on 30/03/2018.
@@ -42,13 +44,21 @@ class AppController {
     lateinit var prefPresenter: PrefContract.Presenter
     lateinit var timerPresenter: TimerContract.Presenter
 
+    /*---------------------SERVICES---------------------*/
+    lateinit var soundPlayer: SoundPlayerContract
+
     fun setUp(applicationContext: Context) {
-        createPresenters(applicationContext)
+        buildServices(applicationContext)
+        createPresenters()
+    }
+
+    private fun buildServices(applicationContext: Context) {
+        soundPlayer = SoundPlayer(applicationContext)
     }
 
 
-    private fun createPresenters(applicationContext: Context) {
-        timerPresenter = TimerPresenter(applicationContext)
+    private fun createPresenters() {
+        timerPresenter = TimerPresenter(soundPlayer)
         prefPresenter = PrefPresenter()
     }
 

@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.pref
+package eu.vmpay.owlquiz.activities.pref
 
 import android.os.Bundle
 import android.preference.PreferenceFragment
@@ -23,6 +23,6 @@ class PrefFragment : PreferenceFragment(), PrefContract.View {
         presenter.takeView(this)
 
         val preference = findPreference(getString(R.string.timer_sound_notification_key))
-        preference.onPreferenceChangeListener = AppController.getInstance().timerPresenter
+        preference.onPreferenceChangeListener = AppController.getInstance().soundPlayer
     }
 }

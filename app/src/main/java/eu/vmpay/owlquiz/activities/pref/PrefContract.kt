@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.pref
+package eu.vmpay.owlquiz.activities.pref
 
 import android.preference.Preference
 import eu.vmpay.owlquiz.BasePresenter

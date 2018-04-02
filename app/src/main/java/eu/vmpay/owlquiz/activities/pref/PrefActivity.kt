@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.pref
+package eu.vmpay.owlquiz.activities.pref
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

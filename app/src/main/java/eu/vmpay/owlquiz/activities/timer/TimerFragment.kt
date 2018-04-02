@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.timer
+package eu.vmpay.owlquiz.activities.timer
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

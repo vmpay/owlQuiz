@@ -1,16 +1,13 @@
-package eu.vmpay.owlquiz.timer
+package eu.vmpay.owlquiz.activities.timer
 
-import android.content.Context
 import android.os.CountDownTimer
-import android.preference.Preference
-import android.preference.PreferenceManager
 import android.util.Log
-import eu.vmpay.owlquiz.R
+import eu.vmpay.owlquiz.soundpool.SoundPlayerContract
 
 /**
  * Created by Andrew on 24/03/2018.
  */
-class TimerPresenter : TimerContract.Presenter {
+class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContract.Presenter {
 
     override var isTimerStarted: Boolean = false
         get() = isStarted
@@ -18,20 +15,12 @@ class TimerPresenter : TimerContract.Presenter {
     private val TAG = "TimerPresenter"
 
     private var isStarted: Boolean = false
-    private var isSoundOn: Boolean
     private var timerLength: Long = 60000
     private var currentSecondsUntilFinished: Long = 0
-    private val TICK: Long = 10
+    private val TICK: Long = 20
 
     private lateinit var timer: CountDownTimer
     private lateinit var timerView: TimerContract.View
-
-    constructor(appContext: Context) {
-        isSoundOn = PreferenceManager.getDefaultSharedPreferences(appContext).getBoolean(
-                appContext.getString(R.string.timer_sound_notification_key), false)
-        Log.d(TAG, "constructor isSoundOn = $isSoundOn")
-    }
-
 
     override fun setTimer(seconds: Long) {
         timerLength = seconds
@@ -50,10 +39,18 @@ class TimerPresenter : TimerContract.Presenter {
                         currentSecondsUntilFinished = 0
                         isStarted = false
                         timerView.showTimerFinished()
+
+                        // play sound when time is up
+                        soundPlayer.playSound()
                     } else {
                         Log.d(TAG, "tick $millisUntilFinished")
                         currentSecondsUntilFinished = millisUntilFinished
                         timerView.showProgress((millisUntilFinished - TICK).toInt(), (timerLength - millisUntilFinished + 2 * TICK).toInt())
+
+                        // play sound when 10 seconds left
+                        if (timerLength > 30_000 && millisUntilFinished / TICK == 500L) {
+                            soundPlayer.playSound()
+                        }
                     }
                 }
 
@@ -61,6 +58,11 @@ class TimerPresenter : TimerContract.Presenter {
                 }
             }
             timer.start()
+
+            // play starting sound
+            if (currentSecondsUntilFinished == 0L) {
+                soundPlayer.playSound()
+            }
         }
         isStarted = !isStarted
     }
@@ -77,12 +79,5 @@ class TimerPresenter : TimerContract.Presenter {
     }
 
     override fun dropView() {
-    }
-
-    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-        if (preference?.titleRes == R.string.timer_sound_notification_key)
-            isSoundOn = newValue as Boolean
-        Log.d(TAG, "onPreferenceChange ${preference?.title} = $newValue")
-        return true
     }
 }
