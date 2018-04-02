@@ -5,7 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="eu.vmpay.owlquiz.MainActivity">
+	tools:context="eu.vmpay.owlquiz.timer.MainActivity">
 
 	<android.support.design.widget.AppBarLayout
 		android:layout_width="match_parent"
@@ -21,10 +21,6 @@
 
 	</android.support.design.widget.AppBarLayout>
 
-	<FrameLayout
-		android:id="@+id/contentFrame"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+	<include layout="@layout/content_main"/>
 
 </android.support.design.widget.CoordinatorLayout>

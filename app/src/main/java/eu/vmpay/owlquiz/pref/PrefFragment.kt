@@ -2,6 +2,7 @@ package eu.vmpay.owlquiz.pref
 
 import android.os.Bundle
 import android.preference.PreferenceFragment
+import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
 
 /**
@@ -9,27 +10,19 @@ import eu.vmpay.owlquiz.R
  */
 class PrefFragment : PreferenceFragment(), PrefContract.View {
 
-    override lateinit var presenter: PrefContract.Presenter
+    lateinit var presenter: PrefContract.Presenter
 
     override var isActive: Boolean = false
         get() = isAdded
-
-//    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-//        if (view != null) {
-//            Snackbar.make(view, "OnPrefChanged ${preference?.title} = $newValue", Snackbar.LENGTH_SHORT).show()
-//        }
-//        return true
-//    }
-
-    companion object {
-        fun newInstance() = PrefFragment()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         addPreferencesFromResource(R.xml.preferences)
 
+        presenter = AppController.getInstance().prefPresenter
+        presenter.takeView(this)
+
         val preference = findPreference(getString(R.string.timer_sound_notification_key))
-        preference.onPreferenceChangeListener = presenter
+        preference.onPreferenceChangeListener = AppController.getInstance().timerPresenter
     }
 }

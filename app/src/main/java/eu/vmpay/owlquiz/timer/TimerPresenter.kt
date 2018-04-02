@@ -1,12 +1,16 @@
 package eu.vmpay.owlquiz.timer
 
+import android.content.Context
 import android.os.CountDownTimer
+import android.preference.Preference
+import android.preference.PreferenceManager
 import android.util.Log
+import eu.vmpay.owlquiz.R
 
 /**
  * Created by Andrew on 24/03/2018.
  */
-class TimerPresenter(val timerView: TimerContract.View) : TimerContract.Presenter {
+class TimerPresenter : TimerContract.Presenter {
 
     override var isTimerStarted: Boolean = false
         get() = isStarted
@@ -14,18 +18,20 @@ class TimerPresenter(val timerView: TimerContract.View) : TimerContract.Presente
     private val TAG = "TimerPresenter"
 
     private var isStarted: Boolean = false
+    private var isSoundOn: Boolean
     private var timerLength: Long = 60000
     private var currentSecondsUntilFinished: Long = 0
-    private lateinit var timer: CountDownTimer
     private val TICK: Long = 10
 
-    init {
-        timerView.presenter = this
+    private lateinit var timer: CountDownTimer
+    private lateinit var timerView: TimerContract.View
+
+    constructor(appContext: Context) {
+        isSoundOn = PreferenceManager.getDefaultSharedPreferences(appContext).getBoolean(
+                appContext.getString(R.string.timer_sound_notification_key), false)
+        Log.d(TAG, "constructor isSoundOn = $isSoundOn")
     }
 
-    override fun start() {
-        Log.d(TAG, "start")
-    }
 
     override fun setTimer(seconds: Long) {
         timerLength = seconds
@@ -64,5 +70,19 @@ class TimerPresenter(val timerView: TimerContract.View) : TimerContract.Presente
         isStarted = false
         timer.cancel()
         timerView.showProgress(timerLength.toInt(), 0)
+    }
+
+    override fun takeView(view: TimerContract.View) {
+        timerView = view
+    }
+
+    override fun dropView() {
+    }
+
+    override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+        if (preference?.titleRes == R.string.timer_sound_notification_key)
+            isSoundOn = newValue as Boolean
+        Log.d(TAG, "onPreferenceChange ${preference?.title} = $newValue")
+        return true
     }
 }

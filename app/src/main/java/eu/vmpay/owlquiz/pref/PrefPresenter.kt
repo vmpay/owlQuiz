@@ -6,15 +6,17 @@ import android.util.Log
 /**
  * Created by Andrew on 30/03/2018.
  */
-class PrefPresenter(val prefView: PrefContract.View) : PrefContract.Presenter {
+class PrefPresenter : PrefContract.Presenter {
+
+    private lateinit var prefView: PrefContract.View
+
     private val TAG = "PrefPresenter"
 
-    init {
-        prefView.presenter = this
+    override fun takeView(view: PrefContract.View) {
+        prefView = view
     }
 
-    override fun start() {
-        Log.d(TAG, "start")
+    override fun dropView() {
     }
 
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {

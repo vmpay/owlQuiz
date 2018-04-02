@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.R.string.*
 import kotlinx.android.synthetic.main.fragment_timer.*
@@ -18,11 +19,7 @@ class TimerFragment : Fragment(), TimerContract.View, View.OnClickListener {
 
     private val TAG = "TimerFragment"
 
-    override lateinit var presenter: TimerContract.Presenter
-
-    companion object {
-        fun newInstance() = TimerFragment()
-    }
+    lateinit var presenter: TimerContract.Presenter
 
     override var isActive: Boolean = false
         get() = isAdded
@@ -37,12 +34,10 @@ class TimerFragment : Fragment(), TimerContract.View, View.OnClickListener {
         view.btnStart.setOnClickListener(this)
         view.btnReset.setOnClickListener(this)
 
-        return view
-    }
+        presenter = AppController.getInstance().timerPresenter
+        presenter.takeView(this)
 
-    override fun onResume() {
-        super.onResume()
-        presenter.start()
+        return view
     }
 
     override fun onPause() {

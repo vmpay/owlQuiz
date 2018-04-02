@@ -15,7 +15,5 @@ interface PrefContract {
 
     }
 
-    interface Presenter : BasePresenter, Preference.OnPreferenceChangeListener {
-        override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean
-    }
+    interface Presenter : BasePresenter<View>, Preference.OnPreferenceChangeListener
 }

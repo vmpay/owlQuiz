@@ -5,6 +5,4 @@ package eu.vmpay.owlquiz
  */
 interface BaseView<T> {
 
-    var presenter: T
-
 }

@@ -1,5 +1,6 @@
 package eu.vmpay.owlquiz.timer
 
+import android.preference.Preference
 import eu.vmpay.owlquiz.BasePresenter
 import eu.vmpay.owlquiz.BaseView
 
@@ -18,7 +19,7 @@ interface TimerContract {
 
     }
 
-    interface Presenter : BasePresenter {
+    interface Presenter : Preference.OnPreferenceChangeListener, BasePresenter<View> {
 
         fun setTimer(seconds: Long)
 
@@ -27,5 +28,6 @@ interface TimerContract {
         fun startTimer()
 
         fun resetTimer()
+
     }
 }
