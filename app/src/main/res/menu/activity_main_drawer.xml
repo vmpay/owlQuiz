@@ -5,33 +5,58 @@
 
 	<group android:checkableBehavior="single">
 		<item
-			android:id="@+id/nav_camera"
-			android:icon="@drawable/ic_menu_camera"
-			android:title="Import"/>
+			android:id="@+id/nav_account"
+			android:icon="@drawable/ic_account_box_black_24dp"
+			android:title="@string/account"/>
 		<item
-			android:id="@+id/nav_gallery"
-			android:icon="@drawable/ic_menu_gallery"
-			android:title="Gallery"/>
+			android:id="@+id/nav_timer"
+			android:icon="@drawable/ic_timer_black_24dp"
+			android:title="@string/nav_timer"/>
 		<item
-			android:id="@+id/nav_slideshow"
-			android:icon="@drawable/ic_menu_slideshow"
-			android:title="Slideshow"/>
+			android:id="@+id/nav_training"
+			android:enabled="false"
+			android:icon="@drawable/ic_school_black_24dp"
+			android:title="@string/nav_training"/>
 		<item
-			android:id="@+id/nav_manage"
-			android:icon="@drawable/ic_menu_manage"
-			android:title="Tools"/>
+			android:id="@+id/nav_local_competition"
+			android:enabled="false"
+			android:icon="@drawable/ic_local_library_black_24dp"
+			android:title="@string/nav_local_competition"/>
 	</group>
 
-	<item android:title="Communicate">
+	<item
+		android:title="@string/nav_group_search"
+		android:visible="false">
 		<menu>
 			<item
-				android:id="@+id/nav_share"
-				android:icon="@drawable/ic_menu_share"
-				android:title="Share"/>
+				android:id="@+id/nav_teams"
+				android:enabled="false"
+				android:icon="@drawable/ic_group_black_24dp"
+				android:title="@string/nav_teams"/>
 			<item
-				android:id="@+id/nav_send"
-				android:icon="@drawable/ic_menu_send"
-				android:title="Send"/>
+				android:id="@+id/nav_players"
+				android:enabled="false"
+				android:icon="@drawable/ic_person_black_24dp"
+				android:title="@string/nav_players"/>
+			<item
+				android:id="@+id/nav_tournaments"
+				android:enabled="false"
+				android:icon="@drawable/ic_public_black_24dp"
+				android:title="@string/nav_tournaments"/>
+		</menu>
+	</item>
+
+	<item android:title="@string/nav_group_application">
+		<menu>
+			<item
+				android:id="@+id/nav_settings"
+				android:icon="@drawable/ic_settings_black_24dp"
+				android:title="@string/nav_settings"/>
+			<item
+				android:id="@+id/nav_about"
+				android:enabled="false"
+				android:icon="@drawable/ic_info_outline_black_24dp"
+				android:title="@string/nav_about"/>
 		</menu>
 	</item>
 
