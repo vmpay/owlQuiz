@@ -4,6 +4,8 @@
 		  android:versionCode="1"
 		  android:versionName="0.1.1">
 
+	<uses-permission android:name="android.permission.INTERNET"/>
+
 	<application
 		android:name=".QuizApp"
 		android:allowBackup="true"
