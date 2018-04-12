@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.activities.pref.PrefActivity
 import eu.vmpay.owlquiz.rest.models.RatingChgkService
@@ -70,7 +71,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_account -> {
-                searchSomething()
+//                searchSomething()
+                searchPlayerFromRepo()
             }
             R.id.nav_timer -> {
                 // Nothing to do. We're already here
@@ -97,5 +99,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }, { error ->
                     error.printStackTrace()
                 })
+    }
+
+    private fun searchPlayerFromRepo() {
+        val playerId: Long = 112
+        AppController.getInstance().playersRepository.getPlayer(playerId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    Log.d("retrofit", "From Repo Response for id=$playerId $result")
+                }, { error ->
+                    error.printStackTrace()
+                })
+
     }
 }

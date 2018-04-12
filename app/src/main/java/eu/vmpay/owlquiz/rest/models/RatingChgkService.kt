@@ -28,8 +28,6 @@ interface RatingChgkService {
     }
 
     @GET("api/players/{userId}")
-    fun searchPlayer(
-            @Path("userId") query: Long
-    ): Observable<List<Player>>
+    fun searchPlayer(@Path("userId") query: Long): Observable<List<Player>>
 
 }

@@ -1,10 +1,14 @@
 package eu.vmpay.owlquiz
 
+import android.arch.persistence.room.Room
 import android.content.Context
 import eu.vmpay.owlquiz.activities.pref.PrefContract
 import eu.vmpay.owlquiz.activities.pref.PrefPresenter
 import eu.vmpay.owlquiz.activities.timer.TimerContract
 import eu.vmpay.owlquiz.activities.timer.TimerPresenter
+import eu.vmpay.owlquiz.repository.AppDatabase
+import eu.vmpay.owlquiz.repository.PlayersRepository
+import eu.vmpay.owlquiz.rest.models.RatingChgkService
 import eu.vmpay.owlquiz.soundpool.SoundPlayer
 import eu.vmpay.owlquiz.soundpool.SoundPlayerContract
 
@@ -46,6 +50,9 @@ class AppController {
 
     /*---------------------SERVICES---------------------*/
     lateinit var soundPlayer: SoundPlayerContract
+    private lateinit var retrofit: RatingChgkService
+    private lateinit var appDatabase: AppDatabase
+    lateinit var playersRepository: PlayersRepository
 
     fun setUp(applicationContext: Context) {
         buildServices(applicationContext)
@@ -54,6 +61,11 @@ class AppController {
 
     private fun buildServices(applicationContext: Context) {
         soundPlayer = SoundPlayer(applicationContext)
+        retrofit = RatingChgkService.create()
+        appDatabase = Room.databaseBuilder(applicationContext,
+                AppDatabase::class.java, "owl_quiz_database").build()
+
+        playersRepository = PlayersRepository(retrofit, appDatabase.userDao())
     }
 
 
