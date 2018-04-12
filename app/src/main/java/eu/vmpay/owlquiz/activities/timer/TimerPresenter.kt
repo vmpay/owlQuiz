@@ -20,7 +20,10 @@ class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContra
     private val TICK: Long = 20
     private var tenSecondSoundPlayed = false
 
-    private lateinit var timer: CountDownTimer
+    private var timer: CountDownTimer = object : CountDownTimer(timerLength, TICK) {
+        override fun onTick(millisUntilFinished: Long) {}
+        override fun onFinish() {}
+    }
     private lateinit var timerView: TimerContract.View
 
     override fun setTimer(seconds: Long) {
