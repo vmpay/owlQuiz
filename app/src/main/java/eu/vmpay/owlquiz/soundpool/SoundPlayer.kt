@@ -16,7 +16,7 @@ class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCom
 
     private val TAG = "SoundPlayer"
     private val MAX_NUMBER_STREAMS = 1
-    private val SOURCE_QULITY = 0
+    private val SOURCE_QUALITY = 0
 
     private val LEFT_VOLUME = 0.5F  // left volume value (range = 0.0 to 1.0)
     private val RIGHT_VOLUME = 0.5F // right volume value (range = 0.0 to 1.0)
@@ -32,8 +32,8 @@ class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCom
     private var isSoundOn: Boolean
 
     init {
-        Log.d(TAG, "init MAX_NUMBER_STREAMS $MAX_NUMBER_STREAMS STREAM_MUSIC ${AudioManager.STREAM_MUSIC} SOURCE_QULITY $SOURCE_QULITY")
-        soundPoolPlayer = SoundPool(MAX_NUMBER_STREAMS, AudioManager.STREAM_MUSIC, SOURCE_QULITY)
+        Log.d(TAG, "init MAX_NUMBER_STREAMS $MAX_NUMBER_STREAMS STREAM_NOTIFICATION ${AudioManager.STREAM_NOTIFICATION} SOURCE_QUALITY $SOURCE_QUALITY")
+        soundPoolPlayer = SoundPool(MAX_NUMBER_STREAMS, AudioManager.STREAM_NOTIFICATION, SOURCE_QUALITY)
         soundPoolPlayer.setOnLoadCompleteListener(this)
         isSoundOn = PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean(
                 applicationContext.getString(R.string.timer_sound_notification_key), false)
