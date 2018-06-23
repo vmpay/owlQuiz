@@ -18,6 +18,7 @@ class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContra
     private var timerLength: Long = 60000
     private var currentSecondsUntilFinished: Long = 0
     private val TICK: Long = 20
+    private var tenSecondSoundPlayed = false
 
     private lateinit var timer: CountDownTimer
     private lateinit var timerView: TimerContract.View
@@ -34,7 +35,7 @@ class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContra
                     if (currentSecondsUntilFinished == 0L) timerLength + TICK
                     else currentSecondsUntilFinished, TICK) {
                 override fun onTick(millisUntilFinished: Long) {
-                    if (millisUntilFinished / TICK == 1L) {
+                    if (millisUntilFinished / (2 * TICK) <= 1L) {
                         Log.d(TAG, "finished $millisUntilFinished")
                         currentSecondsUntilFinished = 0
                         isStarted = false
@@ -48,7 +49,8 @@ class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContra
                         timerView.showProgress((millisUntilFinished - TICK).toInt(), (timerLength - millisUntilFinished + 2 * TICK).toInt())
 
                         // play sound when 10 seconds left
-                        if (timerLength > 30_000 && millisUntilFinished / TICK == 500L) {
+                        if (timerLength > 30_000 && ifTenSecondsLeft(millisUntilFinished) && !tenSecondSoundPlayed) {
+                            tenSecondSoundPlayed = true
                             soundPlayer.playSound()
                         }
                     }
@@ -57,6 +59,7 @@ class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContra
                 override fun onFinish() {
                 }
             }
+            tenSecondSoundPlayed = false
             timer.start()
 
             // play starting sound
@@ -79,5 +82,9 @@ class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContra
     }
 
     override fun dropView() {
+    }
+
+    fun ifTenSecondsLeft(millisUntilFinished: Long): Boolean {
+        return millisUntilFinished / 1000 == 9L
     }
 }
