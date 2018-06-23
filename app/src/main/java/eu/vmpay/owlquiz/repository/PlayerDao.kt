@@ -11,12 +11,19 @@ import io.reactivex.Single
 interface PlayerDao {
 
     @Query("SELECT * FROM players  WHERE idplayer IN (:playerId)")
-    fun getPlayers(playerId: Long): Single<List<Player>>
+    fun getPlayersById(playerId: Long): Single<List<Player>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(player: Player)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(players: List<Player>)
+
+    @Query("SELECT * FROM players WHERE "
+            + "surname LIKE :surname AND "
+            + "name LIKE :name AND "
+            + "patronymic LIKE :patronymic"
+    )
+    fun getPlayersByFullName(surname: String, name: String, patronymic: String): Single<List<Player>>
 
 }

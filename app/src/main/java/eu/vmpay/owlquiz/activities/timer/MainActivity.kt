@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.MenuItem
 import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
+import eu.vmpay.owlquiz.activities.account.AccountActivity
 import eu.vmpay.owlquiz.activities.pref.PrefActivity
 import eu.vmpay.owlquiz.rest.models.RatingChgkService
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -72,7 +73,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_account -> {
 //                searchSomething()
-                searchPlayerFromRepo()
+//                searchPlayerFromRepo()
+                startActivity(Intent(this, AccountActivity::class.java))
             }
             R.id.nav_timer -> {
                 // Nothing to do. We're already here
@@ -91,7 +93,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun searchSomething() {
         val playerId: Long = 112
         val apiService = RatingChgkService.create()
-        apiService.searchPlayer(playerId)
+        apiService.searchPlayerById(playerId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({ result ->

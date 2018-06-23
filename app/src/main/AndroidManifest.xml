@@ -15,7 +15,7 @@
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
 		<activity
-			android:name="eu.vmpay.owlquiz.activities.timer.MainActivity"
+			android:name=".activities.timer.MainActivity"
 			android:label="@string/app_name"
 			android:launchMode="singleTop"
 			android:screenOrientation="portrait"
@@ -27,9 +27,18 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="eu.vmpay.owlquiz.activities.pref.PrefActivity"
-			android:parentActivityName="eu.vmpay.owlquiz.activities.timer.MainActivity"
+			android:name=".activities.pref.PrefActivity"
+			android:parentActivityName=".activities.timer.MainActivity"
 			android:screenOrientation="portrait">
+			<meta-data
+				android:name="android.support.PARENT_ACTIVITY"
+				android:value="eu.vmpay.owlquiz.activities.timer.MainActivity"/>
+		</activity>
+		<activity
+			android:name=".activities.account.AccountActivity"
+			android:label="@string/title_activity_account"
+			android:parentActivityName=".activities.timer.MainActivity"
+			android:theme="@style/AppTheme.NoActionBar">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value="eu.vmpay.owlquiz.activities.timer.MainActivity"/>

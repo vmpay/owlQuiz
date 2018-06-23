@@ -2,6 +2,7 @@ package eu.vmpay.owlquiz
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import eu.vmpay.owlquiz.activities.account.AccountPresenter
 import eu.vmpay.owlquiz.activities.pref.PrefContract
 import eu.vmpay.owlquiz.activities.pref.PrefPresenter
 import eu.vmpay.owlquiz.activities.timer.TimerContract
@@ -47,6 +48,7 @@ class AppController {
     /*---------------------PRESENTERS---------------------*/
     lateinit var prefPresenter: PrefContract.Presenter
     lateinit var timerPresenter: TimerContract.Presenter
+    lateinit var accountPresenter: AccountPresenter
 
     /*---------------------SERVICES---------------------*/
     lateinit var soundPlayer: SoundPlayerContract
@@ -68,10 +70,10 @@ class AppController {
         playersRepository = PlayersRepository(retrofit, appDatabase.userDao())
     }
 
-
     private fun createPresenters() {
         timerPresenter = TimerPresenter(soundPlayer)
         prefPresenter = PrefPresenter()
+        accountPresenter = AccountPresenter(playersRepository)
     }
 
 

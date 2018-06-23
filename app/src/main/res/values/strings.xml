@@ -32,4 +32,5 @@
 	<string name="nav_about">About</string>
 	<string name="tv_empty_name">Hello, stranger!</string>
 	<string name="tv_empty_team">Why don\'t you review Account?</string>
+	<string name="title_activity_account">AccountActivity</string>
 </resources>

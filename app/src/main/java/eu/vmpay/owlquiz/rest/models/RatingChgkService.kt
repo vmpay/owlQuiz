@@ -6,6 +6,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Created by Andrew on 04/04/2018.
@@ -28,6 +29,12 @@ interface RatingChgkService {
     }
 
     @GET("api/players/{userId}")
-    fun searchPlayer(@Path("userId") query: Long): Observable<List<Player>>
+    fun searchPlayerById(@Path("userId") query: Long): Observable<List<Player>>
+
+    @GET("api/players.json/search")
+    fun searchPlayerByFullName(@Query("surname") surname: String,
+                               @Query("name") name: String,
+                               @Query("patronymic") patronymic: String)
+            : Observable<PlayerSearch>
 
 }

@@ -21,27 +21,56 @@ class PlayersRepository(val playerApi: RatingChgkService, val playerDao: PlayerD
 
 
     fun getPlayerFromDb(playerId: Long): Observable<List<Player>> {
-        return playerDao.getPlayers(playerId).filter { it.isNotEmpty() }
+        return playerDao.getPlayersById(playerId).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
-                    Log.d(TAG, "Dispatching ${it.size} users from DB...")
+                    Log.d(TAG, "Dispatching ${it.size} player from DB...")
                 }
     }
 
     fun getPlayerFromApi(playerId: Long): Observable<List<Player>> {
-        return playerApi.searchPlayer(playerId)
+        return playerApi.searchPlayerById(playerId)
                 .doOnNext {
-                    Log.d(TAG, "Dispatching ${it.size} users from API...")
+                    Log.d(TAG, "Dispatching ${it.size} player from API...")
                     storePlayerInDb(it)
                 }
     }
 
-    fun storePlayerInDb(users: List<Player>) {
-        Observable.fromCallable { playerDao.insertAll(users) }
+    fun storePlayerInDb(players: List<Player>) {
+        Observable.fromCallable { playerDao.insertAll(players) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.d(TAG, "Inserted ${users.size} users from API in DB...")
+                    Log.d(TAG, "Inserted ${players.size} players from API in DB...")
                 }
     }
+
+    fun searchForPlayer(surname: String = "", name: String = "", patronymic: String = ""): Observable<List<Player>> {
+        return Observable.concatArray(
+                getPlayerFromDb(surname, name, patronymic),
+                getPlayerFromApi(surname, name, patronymic))
+    }
+
+    private fun getPlayerFromApi(surname: String, name: String, patronymic: String): Observable<List<Player>> {
+        return playerApi.searchPlayerByFullName(surname, name, patronymic)
+                .map { it.items }
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} players from API...")
+                    it.forEach {
+                        if (it.comment.isNullOrEmpty()) it.comment = ""
+                        if (it.db_chgk_info_tag.isNullOrEmpty()) it.db_chgk_info_tag = ""
+                    }
+                    storePlayerInDb(it)
+                }
+    }
+
+    private fun getPlayerFromDb(surname: String, name: String, patronymic: String): Observable<List<Player>> {
+        return playerDao.getPlayersByFullName(surname, name, patronymic).filter { it.isNotEmpty() }
+                .toObservable()
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} players from DB...")
+                }
+    }
+
+
 }
