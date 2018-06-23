@@ -17,6 +17,6 @@
 	<string name="category_sound">Sound options</string>
 	<string name="timer_sound_notification_key" translatable="false">TIMER_SOUND_NOTIFICATION</string>
 	<string name="sound_off">Sound is off</string>
-	<string name="sound_on">Sound is on</string>
+	<string name="sound_on">Sound is on. Any problems? Check notification volume</string>
 	<string name="timer_sound_notification">Timer sound</string>
 </resources>
