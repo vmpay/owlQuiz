@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Andrew on 12/04/2018.
  */
-class PlayersRepository(val playerApi: RatingChgkService, val playerDao: PlayerDao) {
+class PlayersRepository(private val playerApi: RatingChgkService, private val playerDao: PlayerDao) {
 
     private val TAG = "PlayersRepository"
 
@@ -20,7 +20,7 @@ class PlayersRepository(val playerApi: RatingChgkService, val playerDao: PlayerD
     }
 
 
-    fun getPlayerFromDb(playerId: Long): Observable<List<Player>> {
+    private fun getPlayerFromDb(playerId: Long): Observable<List<Player>> {
         return playerDao.getPlayersById(playerId).filter { it.isNotEmpty() }
                 .toObservable()
                 .doOnNext {
@@ -28,7 +28,7 @@ class PlayersRepository(val playerApi: RatingChgkService, val playerDao: PlayerD
                 }
     }
 
-    fun getPlayerFromApi(playerId: Long): Observable<List<Player>> {
+    private fun getPlayerFromApi(playerId: Long): Observable<List<Player>> {
         return playerApi.searchPlayerById(playerId)
                 .doOnNext {
                     Log.d(TAG, "Dispatching ${it.size} player from API...")
@@ -36,7 +36,7 @@ class PlayersRepository(val playerApi: RatingChgkService, val playerDao: PlayerD
                 }
     }
 
-    fun storePlayerInDb(players: List<Player>) {
+    private fun storePlayerInDb(players: List<Player>) {
         Observable.fromCallable { playerDao.insertAll(players) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -54,11 +54,11 @@ class PlayersRepository(val playerApi: RatingChgkService, val playerDao: PlayerD
     private fun getPlayerFromApi(surname: String, name: String, patronymic: String): Observable<List<Player>> {
         return playerApi.searchPlayerByFullName(surname, name, patronymic)
                 .map { it.items }
-                .doOnNext {
+                .doOnNext { it ->
                     Log.d(TAG, "Dispatching ${it.size} players from API...")
                     it.forEach {
-                        if (it.comment.isNullOrEmpty()) it.comment = ""
-                        if (it.db_chgk_info_tag.isNullOrEmpty()) it.db_chgk_info_tag = ""
+                        if (it.comment.isEmpty()) it.comment = ""
+                        if (it.db_chgk_info_tag.isEmpty()) it.db_chgk_info_tag = ""
                     }
                     storePlayerInDb(it)
                 }
