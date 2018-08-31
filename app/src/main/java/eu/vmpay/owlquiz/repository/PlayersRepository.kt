@@ -57,8 +57,8 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
                 .doOnNext { it ->
                     Log.d(TAG, "Dispatching ${it.size} players from API...")
                     it.forEach {
-                        if (it.comment.isEmpty()) it.comment = ""
-                        if (it.db_chgk_info_tag.isEmpty()) it.db_chgk_info_tag = ""
+                        if (it.comment.isNullOrEmpty()) it.comment = ""
+                        if (it.db_chgk_info_tag.isNullOrEmpty()) it.db_chgk_info_tag = ""
                     }
                     storePlayerInDb(it)
                 }
