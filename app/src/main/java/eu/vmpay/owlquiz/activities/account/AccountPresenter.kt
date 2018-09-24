@@ -1,6 +1,7 @@
 package eu.vmpay.owlquiz.activities.account
 
 import android.util.Log
+import eu.vmpay.owlquiz.repository.Player
 import eu.vmpay.owlquiz.repository.PlayersRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -56,6 +57,24 @@ class AccountPresenter(private val playersRepository: PlayersRepository) : Accou
                             accountView.showPlayersDetail(result[0])
                         else
                             accountView.showNoPlayersFound()
+                    }
+                }, { error ->
+                    error.printStackTrace()
+                    if (accountView.isActive) {
+                        accountView.showNetworkError()
+                    }
+                })
+        )
+    }
+
+    override fun loadPlayersDetails(player: Player) {
+        compositeDisposable.add(playersRepository.getPlayerRating(player.idplayer)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    Log.d("retrofit", "Searching for playersRating by id size ${result.size}")
+                    if (accountView.isActive) {
+                        accountView.showPlayersDetail(player, result[result.lastIndex])
                     }
                 }, { error ->
                     error.printStackTrace()

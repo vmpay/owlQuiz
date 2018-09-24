@@ -40,4 +40,7 @@
 	<string name="surname_hint">Surname</string>
 	<string name="no_players_found">No players found</string>
 	<string name="network_error">Network error occurred</string>
+	<string name="rating">Rating:</string>
+	<string name="rating_position">Rating position:</string>
+	<string name="rating_date">Date:</string>
 </resources>

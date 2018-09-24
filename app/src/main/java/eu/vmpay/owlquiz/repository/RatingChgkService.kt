@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.rest.models
+package eu.vmpay.owlquiz.repository
 
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -28,13 +28,16 @@ interface RatingChgkService {
         }
     }
 
-    @GET("api/players/{userId}")
-    fun searchPlayerById(@Path("userId") query: Long): Observable<List<Player>>
+    @GET("api/players/{playerId}")
+    fun searchPlayerById(@Path("playerId") query: Long): Observable<List<Player>>
 
     @GET("api/players.json/search")
     fun searchPlayerByFullName(@Query("surname") surname: String,
                                @Query("name") name: String,
                                @Query("patronymic") patronymic: String)
             : Observable<PlayerSearch>
+
+    @GET("api/players/{playerId}/rating")
+    fun getPlayerRating(@Path("playerId") playerId: Long): Observable<List<PlayerRating>>
 
 }

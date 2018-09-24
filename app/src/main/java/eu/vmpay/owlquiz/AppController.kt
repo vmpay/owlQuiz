@@ -9,7 +9,7 @@ import eu.vmpay.owlquiz.activities.timer.TimerContract
 import eu.vmpay.owlquiz.activities.timer.TimerPresenter
 import eu.vmpay.owlquiz.repository.AppDatabase
 import eu.vmpay.owlquiz.repository.PlayersRepository
-import eu.vmpay.owlquiz.rest.models.RatingChgkService
+import eu.vmpay.owlquiz.repository.RatingChgkService
 import eu.vmpay.owlquiz.soundpool.SoundPlayer
 import eu.vmpay.owlquiz.soundpool.SoundPlayerContract
 

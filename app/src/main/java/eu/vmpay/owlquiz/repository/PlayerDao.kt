@@ -4,13 +4,12 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy
 import android.arch.persistence.room.Query
-import eu.vmpay.owlquiz.rest.models.Player
 import io.reactivex.Single
 
 @Dao
 interface PlayerDao {
 
-    @Query("SELECT * FROM players  WHERE idplayer IN (:playerId)")
+    @Query("SELECT * FROM players WHERE idplayer IN (:playerId)")
     fun getPlayersById(playerId: Long): Single<List<Player>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -26,4 +25,12 @@ interface PlayerDao {
     )
     fun getPlayersByFullName(surname: String, name: String, patronymic: String): Single<List<Player>>
 
+    @Query("SELECT * FROM playerRating WHERE idplayer IN (:playerId)")
+    fun getPlayerRating(playerId: Long): Single<List<PlayerRating>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(playerRating: PlayerRating)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllRatings(playerRatings: List<PlayerRating>)
 }

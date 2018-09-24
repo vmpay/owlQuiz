@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import eu.vmpay.owlquiz.R
-import eu.vmpay.owlquiz.rest.models.Player
+import eu.vmpay.owlquiz.repository.Player
 import kotlinx.android.synthetic.main.query_list_content.view.*
 
-class PlayersAdapter(private val playersList: MutableList<Player>) :
+class PlayersAdapter(private val playersList: MutableList<Player>, private val presenter: AccountContract.Presenter) :
         RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
     class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view)
@@ -30,6 +30,7 @@ class PlayersAdapter(private val playersList: MutableList<Player>) :
         holder.itemView.tvID.text = playersList[position].idplayer.toString()
         val nameText = "${playersList[position].surname} ${playersList[position].name} ${playersList[position].patronymic}"
         holder.itemView.tvName.text = nameText
+        holder.itemView.setOnClickListener { presenter.loadPlayersDetails(playersList[position]) }
     }
 
     // Return the size of your data set (invoked by the layout manager)

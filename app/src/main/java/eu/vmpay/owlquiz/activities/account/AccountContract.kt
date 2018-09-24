@@ -2,7 +2,8 @@ package eu.vmpay.owlquiz.activities.account
 
 import eu.vmpay.owlquiz.BasePresenter
 import eu.vmpay.owlquiz.BaseView
-import eu.vmpay.owlquiz.rest.models.Player
+import eu.vmpay.owlquiz.repository.Player
+import eu.vmpay.owlquiz.repository.PlayerRating
 
 /**
  * Created by Andrew on 12/04/2018.
@@ -20,11 +21,15 @@ interface AccountContract {
         fun showNetworkError()
 
         fun showPlayersDetail(player: Player)
+
+        fun showPlayersDetail(player: Player, playerRating: PlayerRating)
     }
 
     interface Presenter : BasePresenter<View> {
         fun searchForPlayer(surname: String = "", name: String = "", patronymic: String = "")
 
         fun loadPlayersDetails(playerId: Long)
+
+        fun loadPlayersDetails(player: Player)
     }
 }

@@ -1,8 +1,6 @@
 package eu.vmpay.owlquiz.repository
 
 import android.util.Log
-import eu.vmpay.owlquiz.rest.models.Player
-import eu.vmpay.owlquiz.rest.models.RatingChgkService
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
@@ -18,7 +16,6 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
                 getPlayerFromDb(playerId),
                 getPlayerFromApi(playerId))
     }
-
 
     private fun getPlayerFromDb(playerId: Long): Observable<List<Player>> {
         return playerDao.getPlayersById(playerId).filter { it.isNotEmpty() }
@@ -69,6 +66,37 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
                 .toObservable()
                 .doOnNext {
                     Log.d(TAG, "Dispatching ${it.size} players from DB...")
+                }
+    }
+
+    fun getPlayerRating(playerId: Long): Observable<List<PlayerRating>> {
+        return Observable.concatArray(
+                getPlayerRatingFromDb(playerId),
+                getPlayerRatingFromApi(playerId))
+    }
+
+    private fun getPlayerRatingFromApi(playerId: Long): Observable<List<PlayerRating>> {
+        return playerApi.getPlayerRating(playerId)
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} playerRating size from API...")
+                    storeRatingsInDb(it)
+                }
+    }
+
+    private fun getPlayerRatingFromDb(playerId: Long): Observable<List<PlayerRating>> {
+        return playerDao.getPlayerRating(playerId).filter { it.isNotEmpty() }
+                .toObservable()
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} playerRating size from DB...")
+                }
+    }
+
+    private fun storeRatingsInDb(playerRatings: List<PlayerRating>) {
+        Observable.fromCallable { playerDao.insertAllRatings(playerRatings) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    Log.d(TAG, "Inserted $playerRatings playerRatings from API in DB...")
                 }
     }
 

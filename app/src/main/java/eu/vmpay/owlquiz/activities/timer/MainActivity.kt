@@ -12,7 +12,7 @@ import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.activities.account.AccountActivity
 import eu.vmpay.owlquiz.activities.pref.PrefActivity
-import eu.vmpay.owlquiz.rest.models.RatingChgkService
+import eu.vmpay.owlquiz.repository.RatingChgkService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
