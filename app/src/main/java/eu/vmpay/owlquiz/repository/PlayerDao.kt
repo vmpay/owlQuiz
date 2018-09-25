@@ -25,7 +25,7 @@ interface PlayerDao {
     )
     fun getPlayersByFullName(surname: String, name: String, patronymic: String): Single<List<Player>>
 
-    @Query("SELECT * FROM playerRating WHERE idplayer IN (:playerId)")
+    @Query("SELECT * FROM player_rating WHERE idplayer IN (:playerId)")
     fun getPlayerRating(playerId: Long): Single<List<PlayerRating>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -33,4 +33,22 @@ interface PlayerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllRatings(playerRatings: List<PlayerRating>)
+
+    @Query("SELECT * FROM player_team WHERE idplayer IN (:playerId)")
+    fun getPlayerTeam(playerId: Long): Single<List<PlayerTeam>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllPlayerTeams(playerTeams: List<PlayerTeam>)
+
+    @Query("SELECT * FROM teams WHERE idteam IN (:teamId)")
+    fun getTeamById(teamId: Long): Single<List<Team>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllTeams(teams: List<Team>)
+
+    @Query("SELECT * FROM team_rating WHERE idteam IN (:teamId)")
+    fun getTeamRatings(teamId: Long): Single<List<TeamRating>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAllTeamRatings(teams: List<TeamRating>)
 }

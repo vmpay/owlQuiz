@@ -108,7 +108,6 @@
         android:visibility="gone">
 
         <android.support.v7.widget.CardView
-
             android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -128,6 +127,7 @@
                     style="@style/CommonText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/not_available"
                     android:textAlignment="center"
                     tools:text="Long full player name here" />
 
@@ -141,8 +141,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/rating"
-                        android:textAlignment="textEnd" />
+                        android:text="@string/rating" />
 
                     <TextView
                         android:id="@+id/tvRating"
@@ -150,6 +149,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@string/not_available"
                         android:textAlignment="textStart"
                         tools:text="5500" />
 
@@ -165,8 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/rating_position"
-                        android:textAlignment="textEnd" />
+                        android:text="@string/rating_position" />
 
                     <TextView
                         android:id="@+id/tvRatingPosition"
@@ -174,6 +173,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@string/not_available"
                         android:textAlignment="textStart"
                         tools:text="2500" />
 
@@ -189,8 +189,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/rating_date"
-                        android:textAlignment="textEnd" />
+                        android:text="@string/rating_date" />
 
                     <TextView
                         android:id="@+id/tvRatingDate"
@@ -198,6 +197,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@string/not_available"
                         android:textAlignment="textStart"
                         tools:text="2018-09-20" />
 
@@ -222,10 +222,18 @@
                 android:orientation="vertical">
 
                 <TextView
+                    style="@style/SmallText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/team"
+                    android:textAlignment="center" />
+
+                <TextView
                     android:id="@+id/tvTeamName"
                     style="@style/CommonText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@string/not_available"
                     android:textAlignment="center"
                     tools:text="Long team full name" />
 
@@ -241,6 +249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@string/not_available"
                         android:textAlignment="textStart"
                         tools:text="Country" />
 
@@ -250,7 +259,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAlignment="textEnd"
+                        android:text="@string/not_available"
                         tools:text="City" />
 
                 </LinearLayout>
@@ -265,8 +274,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textAlignment="textEnd"
-                        tools:text="@string/rating" />
+                        android:text="@string/rating" />
 
                     <TextView
                         android:id="@+id/tvTeamRating"
@@ -274,8 +282,57 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="@string/not_available"
                         android:textAlignment="textStart"
                         tools:text="2500" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/SmallText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/rating_position" />
+
+                    <TextView
+                        android:id="@+id/tvTeamRatingPosition"
+                        style="@style/SmallText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_available"
+                        android:textAlignment="textStart"
+                        tools:text="2500" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/SmallText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/rating_date" />
+
+                    <TextView
+                        android:id="@+id/tvTeamRatingDate"
+                        style="@style/SmallText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_available"
+                        android:textAlignment="textStart"
+                        tools:text="2018-09-20" />
 
                 </LinearLayout>
 

@@ -96,9 +96,101 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe {
-                    Log.d(TAG, "Inserted $playerRatings playerRatings from API in DB...")
+                    Log.d(TAG, "Inserted ${playerRatings.size} playerRatings size from API in DB...")
                 }
     }
 
+    fun getPlayerTeam(playerId: Long): Observable<List<PlayerTeam>> {
+        return Observable.concatArray(
+                getPlayerTeamFromDb(playerId),
+                getPlayerTeamFromApi(playerId))
+    }
+
+    private fun getPlayerTeamFromApi(playerId: Long): Observable<List<PlayerTeam>> {
+        return playerApi.getPlayerTeam(playerId)
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} playerTeams size from API...")
+                    storeTeamsInDb(it)
+                }
+    }
+
+    private fun getPlayerTeamFromDb(playerId: Long): Observable<List<PlayerTeam>> {
+        return playerDao.getPlayerTeam(playerId).filter { it.isNotEmpty() }
+                .toObservable()
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} playerTeams size from DB...")
+                }
+    }
+
+    private fun storeTeamsInDb(playerTeams: List<PlayerTeam>) {
+        Observable.fromCallable { playerDao.insertAllPlayerTeams(playerTeams) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    Log.d(TAG, "Inserted ${playerTeams.size} playerTeams size from API in DB...")
+                }
+    }
+
+    fun getTeamById(teamId: Long): Observable<List<Team>> {
+        return Observable.concatArray(
+                getTeamByIdFromDb(teamId),
+                getTeamsFromApi(teamId))
+    }
+
+    private fun getTeamsFromApi(teamId: Long): Observable<List<Team>> {
+        return playerApi.getTeamById(teamId)
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} teams size from API...")
+                    storeTeamInDb(it)
+                }
+    }
+
+    private fun getTeamByIdFromDb(teamId: Long): Observable<List<Team>> {
+        return playerDao.getTeamById(teamId).filter { it.isNotEmpty() }
+                .toObservable()
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} teams size from DB...")
+                }
+    }
+
+    private fun storeTeamInDb(teams: List<Team>) {
+        Observable.fromCallable { playerDao.insertAllTeams(teams) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    Log.d(TAG, "Inserted ${teams.size} teams size from API in DB...")
+                }
+    }
+
+    fun getTeamRatings(teamId: Long): Observable<List<TeamRating>> {
+        return Observable.concatArray(
+                getTeamRatingsFromDb(teamId),
+                getTeamRatingsFromApi(teamId))
+    }
+
+    private fun getTeamRatingsFromApi(teamId: Long): Observable<List<TeamRating>> {
+        return playerApi.getTeamRatings(teamId)
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} teams size from API...")
+                    storeTeamRatingsInDb(it)
+                }
+    }
+
+    private fun getTeamRatingsFromDb(teamId: Long): Observable<List<TeamRating>> {
+        return playerDao.getTeamRatings(teamId).filter { it.isNotEmpty() }
+                .toObservable()
+                .doOnNext {
+                    Log.d(TAG, "Dispatching ${it.size} team ratings size from DB...")
+                }
+    }
+
+    private fun storeTeamRatingsInDb(teamRatings: List<TeamRating>) {
+        Observable.fromCallable { playerDao.insertAllTeamRatings(teamRatings) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe {
+                    Log.d(TAG, "Inserted ${teamRatings.size} team ratings size from API in DB...")
+                }
+    }
 
 }

@@ -43,4 +43,7 @@
 	<string name="rating">Rating:</string>
 	<string name="rating_position">Rating position:</string>
 	<string name="rating_date">Date:</string>
+    <string name="server_internal_error">Server internal error</string>
+    <string name="not_available">N/A</string>
+    <string name="team">Team</string>
 </resources>

@@ -13,6 +13,9 @@ import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.repository.Player
 import eu.vmpay.owlquiz.repository.PlayerRating
+import eu.vmpay.owlquiz.repository.Team
+import eu.vmpay.owlquiz.repository.TeamRating
+import eu.vmpay.owlquiz.utils.InputManagerUtils
 import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 
@@ -59,6 +62,7 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
             view.llDetails.visibility = GONE
             view.llSearch.visibility = VISIBLE
         } else {
+            InputManagerUtils.hideKeyboard(activity!!)
             if (view.etPlayerId.text.isEmpty())
                 presenter.searchForPlayer(etSurname.text.toString(), etName.text.toString(), etPatronymic.text.toString())
             else
@@ -109,5 +113,32 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
         tvRating.text = playerRating.rating.toString()
         tvRatingPosition.text = playerRating.rating_position.toString()
         tvRatingDate.text = playerRating.date
+    }
+
+    override fun showPlayersDetail(team: Team?, teamRating: TeamRating) {
+        if (team != null) {
+            tvTeamName.text = team.name
+            tvCountry.text = team.country_name
+            tvTown.text = team.town
+            tvTeamRating.text = teamRating.rating.toString()
+            tvTeamRatingPosition.text = teamRating.rating_position.toString()
+            tvTeamRatingDate.text = teamRating.date
+        }
+    }
+
+    override fun showApiError() {
+        Log.d(TAG, "showApiError")
+        tvError.text = getString(R.string.server_internal_error)
+        tvError.visibility = VISIBLE
+        recyclerView.visibility = GONE
+    }
+
+    override fun clearTeamInfo() {
+        tvTeamName.text = getString(R.string.not_available)
+        tvCountry.text = getString(R.string.not_available)
+        tvTown.text = getString(R.string.not_available)
+        tvTeamRating.text = getString(R.string.not_available)
+        tvTeamRatingPosition.text = getString(R.string.not_available)
+        tvTeamRatingDate.text = getString(R.string.not_available)
     }
 }

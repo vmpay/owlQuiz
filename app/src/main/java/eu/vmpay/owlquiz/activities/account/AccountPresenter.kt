@@ -3,6 +3,7 @@ package eu.vmpay.owlquiz.activities.account
 import android.util.Log
 import eu.vmpay.owlquiz.repository.Player
 import eu.vmpay.owlquiz.repository.PlayersRepository
+import eu.vmpay.owlquiz.repository.Team
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -13,10 +14,12 @@ import io.reactivex.schedulers.Schedulers
 class AccountPresenter(private val playersRepository: PlayersRepository) : AccountContract.Presenter {
 
     private lateinit var accountView: AccountContract.View
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun takeView(view: AccountContract.View) {
         accountView = view
+        if (!compositeDisposable.isDisposed) compositeDisposable.dispose()
+        compositeDisposable = CompositeDisposable()
     }
 
     override fun dropView() {
@@ -80,6 +83,33 @@ class AccountPresenter(private val playersRepository: PlayersRepository) : Accou
                     error.printStackTrace()
                     if (accountView.isActive) {
                         accountView.showNetworkError()
+                    }
+                })
+        )
+        var team: Team? = null
+        compositeDisposable.add(playersRepository.getPlayerTeam(player.idplayer)
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
+                .flatMap { playerTeams -> playersRepository.getTeamById(playerTeams[playerTeams.lastIndex].idteam) }
+                .flatMap { playerTeams: List<Team> ->
+                    team = playerTeams[playerTeams.lastIndex]
+                    playersRepository.getTeamById(playerTeams[playerTeams.lastIndex].idteam)
+                }
+                .flatMap { teams: List<Team> -> playersRepository.getTeamRatings(teams[0].idteam) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    Log.d("retrofit", "Searching for player team rating by id size ${result.size}")
+                    if (accountView.isActive) {
+                        if (!result.isEmpty() && team != null)
+                            accountView.showPlayersDetail(team, result[0])
+                        else
+                            accountView.showNoPlayersFound()
+                    }
+                }, { error ->
+                    error.printStackTrace()
+                    if (accountView.isActive) {
+                        accountView.showApiError()
+                        accountView.clearTeamInfo()
                     }
                 })
         )

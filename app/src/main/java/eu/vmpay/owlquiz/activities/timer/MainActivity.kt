@@ -6,15 +6,10 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.MenuItem
-import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.activities.account.AccountActivity
 import eu.vmpay.owlquiz.activities.pref.PrefActivity
-import eu.vmpay.owlquiz.repository.RatingChgkService
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -90,29 +85,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    private fun searchSomething() {
-        val playerId: Long = 112
-        val apiService = RatingChgkService.create()
-        apiService.searchPlayerById(playerId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({ result ->
-                    Log.d("retrofit", "Response for id=$playerId $result")
-                }, { error ->
-                    error.printStackTrace()
-                })
-    }
-
-    private fun searchPlayerFromRepo() {
-        val playerId: Long = 112
-        AppController.getInstance().playersRepository.getPlayer(playerId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({ result ->
-                    Log.d("retrofit", "From Repo Response for id=$playerId $result")
-                }, { error ->
-                    error.printStackTrace()
-                })
-
-    }
 }
