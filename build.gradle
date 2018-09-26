@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:3.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -30,9 +30,9 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 17
-    targetSdkVersion = 26
-    compileSdkVersion = 26
-    buildToolsVersion = '28.0.1'
+    targetSdkVersion = 28
+    compileSdkVersion = 28
+    buildToolsVersion = '28.0.2'
 
     // App dependencies
     supportLibraryVersion = '27.1.1'
@@ -45,7 +45,7 @@ ext {
     retrofitVersion = '2.4.0'
     adapterRxJava2Version = '2.4.0'
     converterGsonVersion = '2.4.0'
-    rxAndroidVersion = '2.0.2'
+    rxAndroidVersion = '2.1.0'
     rxJavaVersion = '2.1.12'
     loggingInterceptorVersion = '3.11.0'
     roomVersion = '1.1.1'
