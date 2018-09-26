@@ -14,17 +14,17 @@ class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContra
 
     private val TAG = "TimerPresenter"
 
-    private var isStarted: Boolean = false
-    private var timerLength: Long = 60000
-    private var currentSecondsUntilFinished: Long = 0
+    var isStarted: Boolean = false
+    var timerLength: Long = 60000
+    var currentSecondsUntilFinished: Long = 0
     private val TICK: Long = 20
-    private var tenSecondSoundPlayed = false
+    var tenSecondSoundPlayed = false
 
-    private var timer: CountDownTimer = object : CountDownTimer(timerLength, TICK) {
+    var timer: CountDownTimer = object : CountDownTimer(timerLength, TICK) {
         override fun onTick(millisUntilFinished: Long) {}
         override fun onFinish() {}
     }
-    private lateinit var timerView: TimerContract.View
+    lateinit var timerView: TimerContract.View
 
     override fun setTimer(seconds: Long) {
         timerLength = seconds
