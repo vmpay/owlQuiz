@@ -31,6 +31,8 @@ interface AccountContract {
         fun showApiError()
 
         fun clearTeamInfo()
+
+        fun showNoBookmarkYet()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -38,6 +40,12 @@ interface AccountContract {
 
         fun loadPlayersDetails(playerId: Long)
 
-        fun loadPlayersDetails(player: Player)
+        fun loadPlayerAndTeamDetails(playerId: Long)
+
+        fun loadPlayerAndTeamDetails(player: Player)
+
+        fun bookmarkThisPlayer()
+
+        fun getBookmarkedPlayer()
     }
 }

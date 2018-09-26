@@ -12,6 +12,8 @@ import eu.vmpay.owlquiz.repository.PlayersRepository
 import eu.vmpay.owlquiz.repository.RatingChgkService
 import eu.vmpay.owlquiz.soundpool.SoundPlayer
 import eu.vmpay.owlquiz.soundpool.SoundPlayerContract
+import eu.vmpay.owlquiz.utils.SharedPreferences
+import eu.vmpay.owlquiz.utils.SharedPreferencesContract
 
 /**
  * Created by Andrew on 30/03/2018.
@@ -55,6 +57,7 @@ class AppController {
     private lateinit var retrofit: RatingChgkService
     private lateinit var appDatabase: AppDatabase
     lateinit var playersRepository: PlayersRepository
+    lateinit var sharedPreferences: SharedPreferencesContract
 
     fun setUp(applicationContext: Context) {
         buildServices(applicationContext)
@@ -66,14 +69,14 @@ class AppController {
         retrofit = RatingChgkService.create()
         appDatabase = Room.databaseBuilder(applicationContext,
                 AppDatabase::class.java, "owl_quiz_database").build()
-
         playersRepository = PlayersRepository(retrofit, appDatabase.userDao())
+        sharedPreferences = SharedPreferences(applicationContext)
     }
 
     private fun createPresenters() {
         timerPresenter = TimerPresenter(soundPlayer)
         prefPresenter = PrefPresenter()
-        accountPresenter = AccountPresenter(playersRepository)
+        accountPresenter = AccountPresenter(playersRepository, sharedPreferences)
     }
 
 

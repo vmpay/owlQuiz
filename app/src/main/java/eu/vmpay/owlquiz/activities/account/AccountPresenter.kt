@@ -4,6 +4,7 @@ import android.util.Log
 import eu.vmpay.owlquiz.repository.Player
 import eu.vmpay.owlquiz.repository.PlayersRepository
 import eu.vmpay.owlquiz.repository.Team
+import eu.vmpay.owlquiz.utils.SharedPreferencesContract
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -11,15 +12,20 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Andrew on 12/04/2018.
  */
-class AccountPresenter(private val playersRepository: PlayersRepository) : AccountContract.Presenter {
+class AccountPresenter(private val playersRepository: PlayersRepository, private val spContract: SharedPreferencesContract) : AccountContract.Presenter {
 
     private lateinit var accountView: AccountContract.View
     private var compositeDisposable: CompositeDisposable = CompositeDisposable()
+    private var actualPlayerId: Long = 0
+    private var bookmarkPlayerId: Long = spContract.readPlayerId()
 
     override fun takeView(view: AccountContract.View) {
         accountView = view
         if (!compositeDisposable.isDisposed) compositeDisposable.dispose()
         compositeDisposable = CompositeDisposable()
+        if (bookmarkPlayerId != 0L) {
+            loadPlayerAndTeamDetails(bookmarkPlayerId)
+        }
     }
 
     override fun dropView() {
@@ -70,7 +76,24 @@ class AccountPresenter(private val playersRepository: PlayersRepository) : Accou
         )
     }
 
-    override fun loadPlayersDetails(player: Player) {
+    override fun loadPlayerAndTeamDetails(playerId: Long) {
+        compositeDisposable.add(playersRepository.getPlayer(playerId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    Log.d("retrofit", "Searching for players by id size ${result.size}")
+                    loadPlayerAndTeamDetails(result[0])
+                }, { error ->
+                    error.printStackTrace()
+                    if (accountView.isActive) {
+                        accountView.showNetworkError()
+                    }
+                })
+        )
+    }
+
+    override fun loadPlayerAndTeamDetails(player: Player) {
+        actualPlayerId = player.idplayer
         compositeDisposable.add(playersRepository.getPlayerRating(player.idplayer)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -113,5 +136,18 @@ class AccountPresenter(private val playersRepository: PlayersRepository) : Accou
                     }
                 })
         )
+    }
+
+    override fun bookmarkThisPlayer() {
+        bookmarkPlayerId = actualPlayerId
+        spContract.writePlayerId(bookmarkPlayerId)
+    }
+
+    override fun getBookmarkedPlayer() {
+        if (accountView.isActive)
+            if (bookmarkPlayerId == 0L)
+                accountView.showNoBookmarkYet()
+            else
+                loadPlayerAndTeamDetails(bookmarkPlayerId)
     }
 }

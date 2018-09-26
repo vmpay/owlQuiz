@@ -1,13 +1,13 @@
 package eu.vmpay.owlquiz.activities.account
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.design.widget.Snackbar.LENGTH_SHORT
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
@@ -29,7 +29,7 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
     override var isActive: Boolean = false
         get() = isAdded
 
-    private lateinit var presenter: AccountPresenter
+    private lateinit var presenter: AccountContract.Presenter
 
     private lateinit var adapter: PlayersAdapter
 
@@ -38,6 +38,7 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
         presenter = AppController.getInstance().accountPresenter
         presenter.takeView(this)
+        setHasOptionsMenu(true)
 
         view.fab.setOnClickListener {
             query(view)
@@ -62,7 +63,6 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
             view.llDetails.visibility = GONE
             view.llSearch.visibility = VISIBLE
         } else {
-            InputManagerUtils.hideKeyboard(activity!!)
             if (view.etPlayerId.text.isEmpty())
                 presenter.searchForPlayer(etSurname.text.toString(), etName.text.toString(), etPatronymic.text.toString())
             else
@@ -73,6 +73,28 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
     override fun onDestroyView() {
         presenter.dropView()
         super.onDestroyView()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater!!.inflate(R.menu.menu_accout_activity, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_bookmark -> {
+            // User chose the "Settings" item, show the app settings UI...
+            Log.d(TAG, "Option menu action bookmark click")
+            if (llDetails.visibility == VISIBLE) {
+                presenter.bookmarkThisPlayer()
+                Snackbar.make(view!!, R.string.bookmarked_success, LENGTH_SHORT).show()
+            } else
+                presenter.getBookmarkedPlayer()
+            true
+        }
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
     }
 
     override fun showResultList(result: List<Player>) {
@@ -106,6 +128,7 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
     }
 
     override fun showPlayersDetail(player: Player, playerRating: PlayerRating) {
+        InputManagerUtils.hideKeyboard(activity!!)
         llSearch.visibility = GONE
         llDetails.visibility = VISIBLE
         val fullName = "${player.surname} ${player.name} ${player.patronymic}"
@@ -140,5 +163,9 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
         tvTeamRating.text = getString(R.string.not_available)
         tvTeamRatingPosition.text = getString(R.string.not_available)
         tvTeamRatingDate.text = getString(R.string.not_available)
+    }
+
+    override fun showNoBookmarkYet() {
+        Snackbar.make(view!!, R.string.bookmark_empty, LENGTH_SHORT).show()
     }
 }

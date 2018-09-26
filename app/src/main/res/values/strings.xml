@@ -46,4 +46,7 @@
     <string name="server_internal_error">Server internal error</string>
     <string name="not_available">N/A</string>
     <string name="team">Team</string>
+	<string name="action_pin">Pin</string>
+	<string name="bookmarked_success">The player bookmarked</string>
+	<string name="bookmark_empty">Bookmark is empty</string>
 </resources>
