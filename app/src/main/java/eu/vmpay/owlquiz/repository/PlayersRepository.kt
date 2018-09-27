@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Andrew on 12/04/2018.
  */
-class PlayersRepository(private val playerApi: RatingChgkService, private val playerDao: PlayerDao) {
+class PlayersRepository(private val serverApi: RatingChgkService, private val playerDao: PlayerDao) {
 
     private val TAG = "PlayersRepository"
 
@@ -26,7 +26,7 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
     }
 
     private fun getPlayerFromApi(playerId: Long): Observable<List<Player>> {
-        return playerApi.searchPlayerById(playerId)
+        return serverApi.searchPlayerById(playerId)
                 .doOnNext {
                     Log.d(TAG, "Dispatching ${it.size} player from API...")
                     storePlayerInDb(it)
@@ -49,7 +49,7 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
     }
 
     private fun getPlayerFromApi(surname: String, name: String, patronymic: String): Observable<List<Player>> {
-        return playerApi.searchPlayerByFullName(surname, name, patronymic)
+        return serverApi.searchPlayerByFullName(surname, name, patronymic)
                 .map { it.items }
                 .doOnNext { it ->
                     Log.d(TAG, "Dispatching ${it.size} players from API...")
@@ -76,7 +76,7 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
     }
 
     private fun getPlayerRatingFromApi(playerId: Long): Observable<List<PlayerRating>> {
-        return playerApi.getPlayerRating(playerId)
+        return serverApi.getPlayerRating(playerId)
                 .doOnNext {
                     Log.d(TAG, "Dispatching ${it.size} playerRating size from API...")
                     storeRatingsInDb(it)
@@ -107,7 +107,7 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
     }
 
     private fun getPlayerTeamFromApi(playerId: Long): Observable<List<PlayerTeam>> {
-        return playerApi.getPlayerTeam(playerId)
+        return serverApi.getPlayerTeam(playerId)
                 .doOnNext {
                     Log.d(TAG, "Dispatching ${it.size} playerTeams size from API...")
                     storeTeamsInDb(it)
@@ -130,67 +130,4 @@ class PlayersRepository(private val playerApi: RatingChgkService, private val pl
                     Log.d(TAG, "Inserted ${playerTeams.size} playerTeams size from API in DB...")
                 }
     }
-
-    fun getTeamById(teamId: Long): Observable<List<Team>> {
-        return Observable.concatArray(
-                getTeamByIdFromDb(teamId),
-                getTeamsFromApi(teamId))
-    }
-
-    private fun getTeamsFromApi(teamId: Long): Observable<List<Team>> {
-        return playerApi.getTeamById(teamId)
-                .doOnNext {
-                    Log.d(TAG, "Dispatching ${it.size} teams size from API...")
-                    storeTeamInDb(it)
-                }
-    }
-
-    private fun getTeamByIdFromDb(teamId: Long): Observable<List<Team>> {
-        return playerDao.getTeamById(teamId).filter { it.isNotEmpty() }
-                .toObservable()
-                .doOnNext {
-                    Log.d(TAG, "Dispatching ${it.size} teams size from DB...")
-                }
-    }
-
-    private fun storeTeamInDb(teams: List<Team>) {
-        Observable.fromCallable { playerDao.insertAllTeams(teams) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe {
-                    Log.d(TAG, "Inserted ${teams.size} teams size from API in DB...")
-                }
-    }
-
-    fun getTeamRatings(teamId: Long): Observable<List<TeamRating>> {
-        return Observable.concatArray(
-                getTeamRatingsFromDb(teamId),
-                getTeamRatingsFromApi(teamId))
-    }
-
-    private fun getTeamRatingsFromApi(teamId: Long): Observable<List<TeamRating>> {
-        return playerApi.getTeamRatings(teamId)
-                .doOnNext {
-                    Log.d(TAG, "Dispatching ${it.size} teams size from API...")
-                    storeTeamRatingsInDb(it)
-                }
-    }
-
-    private fun getTeamRatingsFromDb(teamId: Long): Observable<List<TeamRating>> {
-        return playerDao.getTeamRatings(teamId).filter { it.isNotEmpty() }
-                .toObservable()
-                .doOnNext {
-                    Log.d(TAG, "Dispatching ${it.size} team ratings size from DB...")
-                }
-    }
-
-    private fun storeTeamRatingsInDb(teamRatings: List<TeamRating>) {
-        Observable.fromCallable { playerDao.insertAllTeamRatings(teamRatings) }
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe {
-                    Log.d(TAG, "Inserted ${teamRatings.size} team ratings size from API in DB...")
-                }
-    }
-
 }

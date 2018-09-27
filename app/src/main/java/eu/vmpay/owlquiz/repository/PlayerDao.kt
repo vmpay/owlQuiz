@@ -39,16 +39,4 @@ interface PlayerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllPlayerTeams(playerTeams: List<PlayerTeam>)
-
-    @Query("SELECT * FROM teams WHERE idteam IN (:teamId)")
-    fun getTeamById(teamId: Long): Single<List<Team>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllTeams(teams: List<Team>)
-
-    @Query("SELECT * FROM team_rating WHERE idteam IN (:teamId)")
-    fun getTeamRatings(teamId: Long): Single<List<TeamRating>>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllTeamRatings(teams: List<TeamRating>)
 }

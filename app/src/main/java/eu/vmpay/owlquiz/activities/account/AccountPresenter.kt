@@ -3,6 +3,7 @@ package eu.vmpay.owlquiz.activities.account
 import eu.vmpay.owlquiz.repository.Player
 import eu.vmpay.owlquiz.repository.PlayersRepository
 import eu.vmpay.owlquiz.repository.Team
+import eu.vmpay.owlquiz.repository.TeamsRepository
 import eu.vmpay.owlquiz.utils.SharedPreferencesContract
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -13,6 +14,7 @@ import io.reactivex.schedulers.Schedulers
  * Created by Andrew on 12/04/2018.
  */
 class AccountPresenter(private val playersRepository: PlayersRepository,
+                       private val teamsRepository: TeamsRepository,
                        private val spContract: SharedPreferencesContract,
                        private val processScheduler: Scheduler = Schedulers.io(),
                        private val androidScheduler: Scheduler = AndroidSchedulers.mainThread())
@@ -121,10 +123,10 @@ class AccountPresenter(private val playersRepository: PlayersRepository,
         compositeDisposable.add(playersRepository.getPlayerTeam(player.idplayer)
                 .observeOn(processScheduler)
                 .subscribeOn(processScheduler)
-                .flatMap { playerTeams -> playersRepository.getTeamById(playerTeams[playerTeams.lastIndex].idteam) }
+                .flatMap { playerTeams -> teamsRepository.getTeamById(playerTeams[playerTeams.lastIndex].idteam) }
                 .flatMap { teams: List<Team> ->
                     team = teams[teams.lastIndex]
-                    playersRepository.getTeamRatings(teams[teams.lastIndex].idteam)
+                    teamsRepository.getTeamRatings(teams[teams.lastIndex].idteam)
                 }
                 .observeOn(androidScheduler)
                 .subscribe({ result ->
