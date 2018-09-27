@@ -112,6 +112,13 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
         recyclerView.visibility = GONE
     }
 
+    override fun showNoTeamFound() {
+        Log.d(TAG, "showNoPlayersFound")
+        tvError.text = getString(R.string.no_team_found)
+        tvError.visibility = VISIBLE
+        recyclerView.visibility = GONE
+    }
+
     override fun showNetworkError() {
         Log.d(TAG, "showNetworkError")
         tvError.text = getString(R.string.network_error)
@@ -120,7 +127,7 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
     }
 
     override fun showPlayersDetail(player: Player) {
-        Log.d(TAG, "showPlayersDetail $player")
+        Log.d(TAG, "showTeamDetails $player")
         adapter.replaceList(player)
         adapter.notifyDataSetChanged()
         tvError.visibility = GONE
@@ -138,7 +145,7 @@ class AccountActivityFragment : Fragment(), AccountContract.View {
         tvRatingDate.text = playerRating.date
     }
 
-    override fun showPlayersDetail(team: Team?, teamRating: TeamRating) {
+    override fun showTeamDetails(team: Team?, teamRating: TeamRating) {
         if (team != null) {
             tvTeamName.text = team.name
             tvCountry.text = team.country_name

@@ -20,13 +20,15 @@ interface AccountContract {
 
         fun showNoPlayersFound()
 
+        fun showNoTeamFound()
+
         fun showNetworkError()
 
         fun showPlayersDetail(player: Player)
 
         fun showPlayersDetail(player: Player, playerRating: PlayerRating)
 
-        fun showPlayersDetail(team: Team?, teamRating: TeamRating)
+        fun showTeamDetails(team: Team?, teamRating: TeamRating)
 
         fun showApiError()
 
@@ -42,7 +44,7 @@ interface AccountContract {
 
         fun loadPlayerAndTeamDetails(playerId: Long)
 
-        fun loadPlayerAndTeamDetails(player: Player)
+        fun loadPlayerRatingAndTeamDetails(player: Player)
 
         fun bookmarkThisPlayer()
 

@@ -1,10 +1,10 @@
 package eu.vmpay.owlquiz.activities.account
 
-import android.util.Log
 import eu.vmpay.owlquiz.repository.Player
 import eu.vmpay.owlquiz.repository.PlayersRepository
 import eu.vmpay.owlquiz.repository.Team
 import eu.vmpay.owlquiz.utils.SharedPreferencesContract
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -12,12 +12,16 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Andrew on 12/04/2018.
  */
-class AccountPresenter(private val playersRepository: PlayersRepository, private val spContract: SharedPreferencesContract) : AccountContract.Presenter {
+class AccountPresenter(private val playersRepository: PlayersRepository,
+                       private val spContract: SharedPreferencesContract,
+                       private val processScheduler: Scheduler = Schedulers.io(),
+                       private val androidScheduler: Scheduler = AndroidSchedulers.mainThread())
+    : AccountContract.Presenter {
 
-    private lateinit var accountView: AccountContract.View
-    private var compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private var actualPlayerId: Long = 0
-    private var bookmarkPlayerId: Long = spContract.readPlayerId()
+    lateinit var accountView: AccountContract.View
+    var compositeDisposable: CompositeDisposable = CompositeDisposable()
+    var actualPlayerId: Long = 0
+    var bookmarkPlayerId: Long = spContract.readPlayerId()
 
     override fun takeView(view: AccountContract.View) {
         accountView = view
@@ -36,10 +40,9 @@ class AccountPresenter(private val playersRepository: PlayersRepository, private
 
     override fun searchForPlayer(surname: String, name: String, patronymic: String) {
         compositeDisposable.add(playersRepository.searchForPlayer(surname, name, patronymic)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .observeOn(androidScheduler)
+                .subscribeOn(processScheduler)
                 .subscribe({ result ->
-                    Log.d("retrofit", "Searching for players size ${result.size}")
                     if (accountView.isActive) {
                         if (!result.isEmpty())
                             accountView.showResultList(result)
@@ -57,10 +60,9 @@ class AccountPresenter(private val playersRepository: PlayersRepository, private
 
     override fun loadPlayersDetails(playerId: Long) {
         compositeDisposable.add(playersRepository.getPlayer(playerId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .observeOn(androidScheduler)
+                .subscribeOn(processScheduler)
                 .subscribe({ result ->
-                    Log.d("retrofit", "Searching for players by id size ${result.size}")
                     if (accountView.isActive) {
                         if (!result.isEmpty())
                             accountView.showPlayersDetail(result[0])
@@ -78,11 +80,10 @@ class AccountPresenter(private val playersRepository: PlayersRepository, private
 
     override fun loadPlayerAndTeamDetails(playerId: Long) {
         compositeDisposable.add(playersRepository.getPlayer(playerId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .observeOn(androidScheduler)
+                .subscribeOn(processScheduler)
                 .subscribe({ result ->
-                    Log.d("retrofit", "Searching for players by id size ${result.size}")
-                    loadPlayerAndTeamDetails(result[0])
+                    loadPlayerRatingAndTeamDetails(result[0])
                 }, { error ->
                     error.printStackTrace()
                     if (accountView.isActive) {
@@ -92,13 +93,17 @@ class AccountPresenter(private val playersRepository: PlayersRepository, private
         )
     }
 
-    override fun loadPlayerAndTeamDetails(player: Player) {
+    override fun loadPlayerRatingAndTeamDetails(player: Player) {
         actualPlayerId = player.idplayer
+        loadPlayerRating(player)
+        loadPlayerTeamsDetails(player)
+    }
+
+    private fun loadPlayerRating(player: Player) {
         compositeDisposable.add(playersRepository.getPlayerRating(player.idplayer)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .observeOn(androidScheduler)
+                .subscribeOn(processScheduler)
                 .subscribe({ result ->
-                    Log.d("retrofit", "Searching for playersRating by id size ${result.size}")
                     if (accountView.isActive) {
                         accountView.showPlayersDetail(player, result[result.lastIndex])
                     }
@@ -109,24 +114,25 @@ class AccountPresenter(private val playersRepository: PlayersRepository, private
                     }
                 })
         )
+    }
+
+    private fun loadPlayerTeamsDetails(player: Player) {
         var team: Team? = null
         compositeDisposable.add(playersRepository.getPlayerTeam(player.idplayer)
-                .observeOn(Schedulers.io())
-                .subscribeOn(Schedulers.io())
+                .observeOn(processScheduler)
+                .subscribeOn(processScheduler)
                 .flatMap { playerTeams -> playersRepository.getTeamById(playerTeams[playerTeams.lastIndex].idteam) }
-                .flatMap { playerTeams: List<Team> ->
-                    team = playerTeams[playerTeams.lastIndex]
-                    playersRepository.getTeamById(playerTeams[playerTeams.lastIndex].idteam)
+                .flatMap { teams: List<Team> ->
+                    team = teams[teams.lastIndex]
+                    playersRepository.getTeamRatings(teams[teams.lastIndex].idteam)
                 }
-                .flatMap { teams: List<Team> -> playersRepository.getTeamRatings(teams[0].idteam) }
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(androidScheduler)
                 .subscribe({ result ->
-                    Log.d("retrofit", "Searching for player team rating by id size ${result.size}")
                     if (accountView.isActive) {
                         if (!result.isEmpty() && team != null)
-                            accountView.showPlayersDetail(team, result[0])
+                            accountView.showTeamDetails(team, result[0])
                         else
-                            accountView.showNoPlayersFound()
+                            accountView.showNoTeamFound()
                     }
                 }, { error ->
                     error.printStackTrace()

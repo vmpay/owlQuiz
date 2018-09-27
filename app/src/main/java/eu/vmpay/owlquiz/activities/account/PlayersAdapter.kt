@@ -30,7 +30,7 @@ class PlayersAdapter(private val playersList: MutableList<Player>, private val p
         holder.itemView.tvID.text = playersList[position].idplayer.toString()
         val nameText = "${playersList[position].surname} ${playersList[position].name} ${playersList[position].patronymic}"
         holder.itemView.tvName.text = nameText
-        holder.itemView.setOnClickListener { presenter.loadPlayerAndTeamDetails(playersList[position]) }
+        holder.itemView.setOnClickListener { presenter.loadPlayerRatingAndTeamDetails(playersList[position]) }
     }
 
     // Return the size of your data set (invoked by the layout manager)

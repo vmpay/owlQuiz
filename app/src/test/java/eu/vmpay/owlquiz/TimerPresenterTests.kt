@@ -4,9 +4,7 @@ import android.os.CountDownTimer
 import eu.vmpay.owlquiz.activities.timer.TimerContract
 import eu.vmpay.owlquiz.activities.timer.TimerPresenter
 import eu.vmpay.owlquiz.soundpool.SoundPlayer
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertFalse
-import org.junit.After
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
@@ -22,53 +20,71 @@ class TimerPresenterTests {
 
     @Before
     fun setUp() {
-        presenter.takeView(view)
+        // Replaces mocked timer inside the presenter
         presenter.timer = Mockito.mock(CountDownTimer::class.java)
+        // Required for late init view
+        presenter.takeView(view)
     }
 
     @Test
     fun takeViewTest() {
+        // Trigger actions
         presenter.takeView(view)
         presenter.dropView()
 
+        // Verify asserts
         assertEquals(view, presenter.timerView)
     }
 
     @Test
     fun setTimerTest() {
         var timerLength: Long = 20_000
+        // Trigger action
         presenter.setTimer(timerLength)
+        // Verify asserts
         assertEquals(timerLength, presenter.timerLength)
 
         timerLength = 30_000
+        // Trigger action
         presenter.setTimer(timerLength)
+        // Verify asserts
         assertEquals(timerLength, presenter.timerLength)
 
         timerLength = 60_000
+        // Trigger action
         presenter.setTimer(timerLength)
+        // Verify asserts
         assertEquals(timerLength, presenter.timerLength)
     }
 
     @Test
     fun pauseTimerTest() {
+        // Pre-configure presenter
         presenter.isStarted = true
+        // Trigger action
         presenter.startTimer()
 
+        // Verify asserts
         verify(presenter.timer).cancel()
-        assertFalse(presenter.isStarted)
+        assertFalse(presenter.isTimerStarted)
     }
 
     @Test
     fun resetTimerTest() {
+        // Trigger action
         presenter.resetTimer()
 
+        // Verify asserts
         assertEquals(0, presenter.currentSecondsUntilFinished)
-        assertFalse(presenter.isStarted)
+        assertFalse(presenter.isTimerStarted)
         verify(presenter.timer).cancel()
         verify(view).showProgress(anyInt(), eq(0))
     }
 
-    @After
-    fun tearDown() {
+    @Test
+    fun ifTenSecondsLeftTest() {
+        // Verify asserts
+        assertFalse(presenter.ifTenSecondsLeft(10_000))
+        assertTrue(presenter.ifTenSecondsLeft(9_000))
     }
 }
