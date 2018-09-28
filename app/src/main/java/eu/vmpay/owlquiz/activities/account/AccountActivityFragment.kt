@@ -1,14 +1,14 @@
 package eu.vmpay.owlquiz.activities.account
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.design.widget.Snackbar.LENGTH_SHORT
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
+import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import eu.vmpay.owlquiz.AppController
 import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.repository.Player

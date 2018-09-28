@@ -1,7 +1,7 @@
 package eu.vmpay.owlquiz.repository
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 
 /**
  * Created by Andrew on 12/04/2018.

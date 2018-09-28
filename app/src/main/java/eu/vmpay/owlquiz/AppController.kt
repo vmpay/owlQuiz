@@ -1,7 +1,7 @@
 package eu.vmpay.owlquiz
 
-import android.arch.persistence.room.Room
 import android.content.Context
+import androidx.room.Room
 import eu.vmpay.owlquiz.activities.account.AccountPresenter
 import eu.vmpay.owlquiz.activities.pref.PrefContract
 import eu.vmpay.owlquiz.activities.pref.PrefPresenter

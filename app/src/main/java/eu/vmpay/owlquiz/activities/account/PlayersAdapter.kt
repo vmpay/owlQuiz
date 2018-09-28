@@ -1,6 +1,5 @@
 package eu.vmpay.owlquiz.activities.account
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,9 @@ import eu.vmpay.owlquiz.repository.Player
 import kotlinx.android.synthetic.main.query_list_content.view.*
 
 class PlayersAdapter(private val playersList: MutableList<Player>, private val presenter: AccountContract.Presenter) :
-        RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
+        androidx.recyclerview.widget.RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 
-    class PlayerViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    class PlayerViewHolder(view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view)
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
