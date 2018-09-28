@@ -19,9 +19,10 @@ class AccountPresenterTests {
     private val testScheduler: TestScheduler = TestScheduler()
     private val compositeDisposable: CompositeDisposable = Mockito.mock(CompositeDisposable::class.java)
     private val view: AccountContract.View = Mockito.mock(AccountContract.View::class.java)
-    private val repository: PlayersRepository = Mockito.mock(PlayersRepository::class.java)
+    private val playersRepository: PlayersRepository = Mockito.mock(PlayersRepository::class.java)
+    private val teamsRepository: TeamsRepository = Mockito.mock(TeamsRepository::class.java)
     private val sharedPreferences: SharedPreferences = Mockito.mock(SharedPreferences::class.java)
-    private val presenter: AccountPresenter = AccountPresenter(repository, sharedPreferences, testScheduler, testScheduler)
+    private val presenter: AccountPresenter = AccountPresenter(playersRepository, teamsRepository, sharedPreferences, testScheduler, testScheduler)
 
     private val testPlayerId: Long = 2020
     private val testTeamId: Long = 220
@@ -52,11 +53,11 @@ class AccountPresenterTests {
     @Test
     fun takeViewHappyTest() {
         // Prepare response and mocks
-        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), repository, testPlayerId)
-        buildGetPlayerRatingMockResponse(Observable.just(playerRatingResponse.body()), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), playersRepository, testPlayerId)
+        buildGetPlayerRatingMockResponse(Observable.just(playerRatingResponse.body()), playersRepository, testPlayerId)
         buildLoadPlayerTeamDetailsResponse(
                 Observable.just(playerTeamResponse.body()), Observable.just(teamResponse.body()),
-                Observable.just(teamRatingResponse.body()), repository)
+                Observable.just(teamRatingResponse.body()), playersRepository, teamsRepository)
         // Pre-configure presenter
         presenter.bookmarkPlayerId = testPlayerId
 
@@ -76,11 +77,11 @@ class AccountPresenterTests {
     @Test
     fun noTeamFoundTest() {
         // Prepare response and mocks
-        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), repository, testPlayerId)
-        buildGetPlayerRatingMockResponse(Observable.just(playerRatingResponse.body()), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), playersRepository, testPlayerId)
+        buildGetPlayerRatingMockResponse(Observable.just(playerRatingResponse.body()), playersRepository, testPlayerId)
         buildLoadPlayerTeamDetailsResponse(
                 Observable.just(playerTeamResponse.body()), Observable.just(teamResponse.body()),
-                Observable.just(Response.success<List<TeamRating>>(listOf()).body()), repository)
+                Observable.just(Response.success<List<TeamRating>>(listOf()).body()), playersRepository, teamsRepository)
         // Pre-configure presenter
         presenter.bookmarkPlayerId = testPlayerId
 
@@ -100,7 +101,7 @@ class AccountPresenterTests {
     @Test
     fun takeViewGetPlayerFailTest() {
         // Prepare response and mocks
-        buildGetPlayerMockResponse(Observable.error<List<Player>>(throwable), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.error<List<Player>>(throwable), playersRepository, testPlayerId)
         // Pre-configure presenter
         presenter.bookmarkPlayerId = testPlayerId
 
@@ -118,11 +119,11 @@ class AccountPresenterTests {
     @Test
     fun takeViewGetPlayerRatingFailTest() {
         // Prepare response and mocks
-        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), repository, testPlayerId)
-        buildGetPlayerRatingMockResponse(Observable.error<List<PlayerRating>>(throwable), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), playersRepository, testPlayerId)
+        buildGetPlayerRatingMockResponse(Observable.error<List<PlayerRating>>(throwable), playersRepository, testPlayerId)
         buildLoadPlayerTeamDetailsResponse(
                 Observable.error<List<PlayerTeam>>(throwable), Observable.error<List<Team>>(throwable),
-                Observable.error<List<TeamRating>>(throwable), repository)
+                Observable.error<List<TeamRating>>(throwable), playersRepository, teamsRepository)
         // Pre-configure presenter
         presenter.bookmarkPlayerId = testPlayerId
 
@@ -166,7 +167,7 @@ class AccountPresenterTests {
     @Test
     fun getBookmarkedPlayerHappyTest() {
         // Prepare response
-        buildGetPlayerMockResponse(Observable.error<List<Player>>(throwable), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.error<List<Player>>(throwable), playersRepository, testPlayerId)
         // Pre-configure presenter
         presenter.bookmarkPlayerId = testPlayerId
         // Trigger action
@@ -194,7 +195,7 @@ class AccountPresenterTests {
     @Test
     fun searchForPlayerHappyTest() {
         // Prepare response
-        buildSearchForPlayerResponse(Observable.just(playerResponse.body()), repository)
+        buildSearchForPlayerResponse(Observable.just(playerResponse.body()), playersRepository)
         // Trigger player search
         presenter.searchForPlayer()
         // Trigger Schedulers
@@ -207,7 +208,7 @@ class AccountPresenterTests {
     @Test
     fun searchForPlayerEmptyListTest() {
         // Prepare response
-        buildSearchForPlayerResponse(Observable.just(Response.success<List<Player>>(listOf()).body()), repository)
+        buildSearchForPlayerResponse(Observable.just(Response.success<List<Player>>(listOf()).body()), playersRepository)
         // Trigger player search
         presenter.searchForPlayer()
         // Trigger Schedulers
@@ -220,7 +221,7 @@ class AccountPresenterTests {
     @Test
     fun searchForPlayerFailTest() {
         // Prepare response
-        buildSearchForPlayerResponse(Observable.error(throwable), repository)
+        buildSearchForPlayerResponse(Observable.error(throwable), playersRepository)
 
         // Trigger player search
         presenter.searchForPlayer()
@@ -235,7 +236,7 @@ class AccountPresenterTests {
     @Test
     fun loadPlayersDetailsHappyTest() {
         // Prepare response
-        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.just(playerResponse.body()), playersRepository, testPlayerId)
         // Trigger player search
         presenter.loadPlayersDetails(testPlayerId)
         // Trigger Schedulers
@@ -248,7 +249,7 @@ class AccountPresenterTests {
     @Test
     fun loadPlayersDetailsEmptyListTest() {
         // Prepare response
-        buildGetPlayerMockResponse(Observable.just(Response.success<List<Player>>(listOf()).body()), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.just(Response.success<List<Player>>(listOf()).body()), playersRepository, testPlayerId)
         // Trigger player search
         presenter.loadPlayersDetails(testPlayerId)
         // Trigger Schedulers
@@ -261,7 +262,7 @@ class AccountPresenterTests {
     @Test
     fun loadPlayersDetailsFailTest() {
         // Prepare response
-        buildGetPlayerMockResponse(Observable.error(throwable), repository, testPlayerId)
+        buildGetPlayerMockResponse(Observable.error(throwable), playersRepository, testPlayerId)
         // Trigger player search
         presenter.loadPlayersDetails(testPlayerId)
         // Trigger Schedulers
@@ -285,9 +286,10 @@ class AccountPresenterTests {
 
     private fun buildLoadPlayerTeamDetailsResponse(
             playerTeamObservable: Observable<List<PlayerTeam>?>?, teamObservable: Observable<List<Team>?>?,
-            teamRatingObservable: Observable<List<TeamRating>?>?, repository: PlayersRepository) {
-        doReturn(playerTeamObservable).`when`(repository).getPlayerTeam(anyLong())
-        doReturn(teamObservable).`when`(repository).getTeamById(anyLong())
-        doReturn(teamRatingObservable).`when`(repository).getTeamRatings(anyLong())
+            teamRatingObservable: Observable<List<TeamRating>?>?, playersRepository: PlayersRepository,
+            teamsRepository: TeamsRepository) {
+        doReturn(playerTeamObservable).`when`(playersRepository).getPlayerTeam(anyLong())
+        doReturn(teamObservable).`when`(teamsRepository).getTeamById(anyLong())
+        doReturn(teamRatingObservable).`when`(teamsRepository).getTeamRatings(anyLong())
     }
 }
