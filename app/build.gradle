@@ -6,6 +6,9 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "eu.vmpay.owlquiz"
         minSdkVersion rootProject.ext.minSdkVersion

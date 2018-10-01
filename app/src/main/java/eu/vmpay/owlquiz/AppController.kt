@@ -2,8 +2,6 @@ package eu.vmpay.owlquiz
 
 import android.content.Context
 import eu.vmpay.owlquiz.activities.account.AccountPresenter
-import eu.vmpay.owlquiz.activities.pref.PrefContract
-import eu.vmpay.owlquiz.activities.pref.PrefPresenter
 import eu.vmpay.owlquiz.activities.timer.TimerContract
 import eu.vmpay.owlquiz.activities.timer.TimerPresenter
 import eu.vmpay.owlquiz.repository.AppDatabase
@@ -47,7 +45,7 @@ class AppController {
     }
 
     /*---------------------PRESENTERS---------------------*/
-    lateinit var prefPresenter: PrefContract.Presenter
+//    lateinit var prefPresenter: PrefContract.Presenter
     lateinit var timerPresenter: TimerContract.Presenter
     lateinit var accountPresenter: AccountPresenter
 
@@ -76,7 +74,7 @@ class AppController {
 
     private fun createPresenters() {
         timerPresenter = TimerPresenter(soundPlayer)
-        prefPresenter = PrefPresenter()
+//        prefPresenter = PrefPresenter()
         accountPresenter = AccountPresenter(playersRepository, teamsRepository, sharedPreferences)
     }
 
