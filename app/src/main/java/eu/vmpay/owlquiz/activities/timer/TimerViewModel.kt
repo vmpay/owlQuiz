@@ -36,7 +36,7 @@ class TimerViewModel(private val soundPlayer: SoundPlayer) : ViewModel() {
             areRadioButtonsEnabled.set(false)
 
             // play starting sound
-            if (millisUntilFinish.get() == 0) {
+            if (millisUntilFinish.get() == maxProgress.get()) {
                 soundPlayer.playSound()
             }
         }
