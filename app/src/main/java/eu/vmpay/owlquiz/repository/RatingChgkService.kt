@@ -18,8 +18,19 @@ interface RatingChgkService {
     /**
      * Companion object to create the RatingChgkService
      */
-    companion object Factory {
-        fun create(): RatingChgkService {
+    companion object {
+        private const val BASE_URL = "http://rating.chgk.info/"
+        // For Singleton instantiation
+        @Volatile
+        private var instance: RatingChgkService? = null
+
+        fun getInstance(): RatingChgkService {
+            return instance ?: synchronized(this) {
+                instance ?: buildService().also { instance = it }
+            }
+        }
+
+        private fun buildService(): RatingChgkService {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
             val httpClient = OkHttpClient.Builder()
@@ -27,7 +38,7 @@ interface RatingChgkService {
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl("http://rating.chgk.info/")
+                    .baseUrl(BASE_URL)
                     .client(httpClient.build())
                     .build()
 

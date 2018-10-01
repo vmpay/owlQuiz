@@ -12,7 +12,7 @@ import eu.vmpay.owlquiz.R
 /**
  * Created by Andrew on 02/04/2018.
  */
-class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCompleteListener, SoundPlayerContract {
+class SoundPlayer private constructor(private val applicationContext: Context) : SoundPool.OnLoadCompleteListener, SoundPlayerContract {
 
     private val TAG = "SoundPlayer"
     private val MAX_NUMBER_STREAMS = 1
@@ -30,6 +30,18 @@ class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCom
 
     private var isPlaying = false
     private var isSoundOn: Boolean
+
+    companion object {
+        // For Singleton instantiation
+        @Volatile
+        private var instance: SoundPlayer? = null
+
+        fun getInstance(context: Context): SoundPlayer {
+            return instance ?: synchronized(this) {
+                instance ?: SoundPlayer(context).also { instance = it }
+            }
+        }
+    }
 
     init {
         Log.d(TAG, "init MAX_NUMBER_STREAMS $MAX_NUMBER_STREAMS STREAM_NOTIFICATION ${AudioManager.STREAM_NOTIFICATION} SOURCE_QUALITY $SOURCE_QUALITY")

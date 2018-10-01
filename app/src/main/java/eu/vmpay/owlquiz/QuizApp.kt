@@ -15,7 +15,7 @@ class QuizApp : Application() {
 
         Log.d(TAG, "onCreate")
 
-        AppController.getInstance().setUp(applicationContext)
+//        AppController.getInstance().setUp(applicationContext)
 
     }
 }

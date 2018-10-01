@@ -7,6 +7,7 @@ import eu.vmpay.owlquiz.soundpool.SoundPlayerContract
 /**
  * Created by Andrew on 24/03/2018.
  */
+@Deprecated("Architecture change to MVVM")
 class TimerPresenter(private val soundPlayer: SoundPlayerContract) : TimerContract.Presenter {
 
     override var isTimerStarted: Boolean = false

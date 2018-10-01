@@ -6,6 +6,7 @@ import eu.vmpay.owlquiz.BaseView
 /**
  * Created by Andrew on 24/03/2018.
  */
+@Deprecated("Architecture change to MVVM")
 interface TimerContract {
 
     interface View : BaseView<Presenter> {

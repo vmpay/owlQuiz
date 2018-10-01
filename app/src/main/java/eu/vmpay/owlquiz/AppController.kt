@@ -1,7 +1,6 @@
 package eu.vmpay.owlquiz
 
 import android.content.Context
-import androidx.room.Room
 import eu.vmpay.owlquiz.activities.account.AccountPresenter
 import eu.vmpay.owlquiz.activities.pref.PrefContract
 import eu.vmpay.owlquiz.activities.pref.PrefPresenter
@@ -11,14 +10,13 @@ import eu.vmpay.owlquiz.repository.AppDatabase
 import eu.vmpay.owlquiz.repository.PlayersRepository
 import eu.vmpay.owlquiz.repository.RatingChgkService
 import eu.vmpay.owlquiz.repository.TeamsRepository
-import eu.vmpay.owlquiz.soundpool.SoundPlayer
 import eu.vmpay.owlquiz.soundpool.SoundPlayerContract
-import eu.vmpay.owlquiz.utils.SharedPreferences
 import eu.vmpay.owlquiz.utils.SharedPreferencesContract
 
 /**
  * Created by Andrew on 30/03/2018.
  */
+@Deprecated("Architecture change to MVVM")
 class AppController {
 
     private val TAG = "AppController"
@@ -67,13 +65,13 @@ class AppController {
     }
 
     private fun buildServices(applicationContext: Context) {
-        soundPlayer = SoundPlayer(applicationContext)
-        retrofit = RatingChgkService.create()
-        appDatabase = Room.databaseBuilder(applicationContext,
-                AppDatabase::class.java, "owl_quiz_database").build()
-        playersRepository = PlayersRepository(retrofit, appDatabase.playerDao())
-        teamsRepository = TeamsRepository(retrofit, appDatabase.teamDao())
-        sharedPreferences = SharedPreferences(applicationContext)
+//        soundPlayer = SoundPlayer(applicationContext)
+//        retrofit = RatingChgkService.create()
+//        appDatabase = Room.databaseBuilder(applicationContext,
+//                AppDatabase::class.java, "owl_quiz_database").build()
+//        playersRepository = PlayersRepository(retrofit, appDatabase.playerDao())
+//        teamsRepository = TeamsRepository(retrofit, appDatabase.teamDao())
+//        sharedPreferences = SharedPreferences(applicationContext)
     }
 
     private fun createPresenters() {
