@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import eu.vmpay.owlquiz.repository.PlayersRepository
 import eu.vmpay.owlquiz.repository.TeamsRepository
-import eu.vmpay.owlquiz.utils.SharedPreferences
+import eu.vmpay.owlquiz.tools.SharedPreferences
 
 class AccountViewModelFactory(
         private val playersRepository: PlayersRepository, private val teamsRepository: TeamsRepository,

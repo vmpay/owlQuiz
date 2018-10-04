@@ -2,7 +2,7 @@ package eu.vmpay.owlquiz
 
 import android.os.CountDownTimer
 import eu.vmpay.owlquiz.activities.timer.TimerViewModel
-import eu.vmpay.owlquiz.soundpool.SoundPlayer
+import eu.vmpay.owlquiz.tools.SoundPlayer
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

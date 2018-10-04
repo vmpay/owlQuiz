@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.ViewModel
-import eu.vmpay.owlquiz.soundpool.SoundPlayer
+import eu.vmpay.owlquiz.tools.SoundPlayer
 
 class TimerViewModel(private val soundPlayer: SoundPlayer) : ViewModel() {
     private val TAG = "TimerViewModel"

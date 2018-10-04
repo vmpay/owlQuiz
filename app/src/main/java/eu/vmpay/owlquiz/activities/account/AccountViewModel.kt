@@ -6,7 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.repository.*
-import eu.vmpay.owlquiz.utils.SharedPreferences
+import eu.vmpay.owlquiz.tools.SharedPreferences
 import eu.vmpay.owlquiz.utils.SnackbarMessage
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

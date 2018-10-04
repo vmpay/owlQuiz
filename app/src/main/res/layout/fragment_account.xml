@@ -144,7 +144,7 @@
                         style="@style/CommonText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.player != null ? viewModel.player.surname : @string/not_available}"
+                        android:text='@{viewModel.player != null ? viewModel.player.surname + " " + viewModel.player.name + " " + viewModel.player.patronymic : @string/not_available}'
                         android:textAlignment="center"
                         tools:text="Long full player name here" />
 

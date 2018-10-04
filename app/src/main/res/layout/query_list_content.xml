@@ -43,14 +43,14 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/normal_button_height"
                 android:layout_marginEnd="@dimen/normal_button_height"
-                android:background="@color/cardview_dark_background"
+                android:background="@color/dark_grey"
                 android:padding="@dimen/activity_horizontal_margin" />
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{player.surname + player.name + player.patronymic}"
+                android:text='@{player.surname + " " + player.name + " " + player.patronymic}'
                 tools:text="\tCredentials" />
 
         </LinearLayout>

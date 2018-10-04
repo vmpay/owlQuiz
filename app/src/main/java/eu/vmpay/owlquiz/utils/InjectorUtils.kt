@@ -7,7 +7,8 @@ import eu.vmpay.owlquiz.repository.AppDatabase
 import eu.vmpay.owlquiz.repository.PlayersRepository
 import eu.vmpay.owlquiz.repository.RatingChgkService
 import eu.vmpay.owlquiz.repository.TeamsRepository
-import eu.vmpay.owlquiz.soundpool.SoundPlayer
+import eu.vmpay.owlquiz.tools.SharedPreferences
+import eu.vmpay.owlquiz.tools.SoundPlayer
 
 /**
  * Static methods used to inject classes needed for various Activities and Fragments.

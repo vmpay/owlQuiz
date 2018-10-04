@@ -3,7 +3,7 @@ package eu.vmpay.owlquiz
 import androidx.lifecycle.MediatorLiveData
 import eu.vmpay.owlquiz.activities.account.AccountViewModel
 import eu.vmpay.owlquiz.repository.*
-import eu.vmpay.owlquiz.utils.SharedPreferences
+import eu.vmpay.owlquiz.tools.SharedPreferences
 import eu.vmpay.owlquiz.utils.SnackbarMessage
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable

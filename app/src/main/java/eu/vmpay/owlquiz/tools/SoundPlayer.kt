@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.soundpool
+package eu.vmpay.owlquiz.tools
 
 import android.content.Context
 import android.media.AudioManager
@@ -12,7 +12,7 @@ import eu.vmpay.owlquiz.R
 /**
  * Created by Andrew on 02/04/2018.
  */
-class SoundPlayer private constructor(private val applicationContext: Context) : SoundPool.OnLoadCompleteListener, SoundPlayerContract {
+class SoundPlayer private constructor(private val applicationContext: Context) : SoundPool.OnLoadCompleteListener, Preference.OnPreferenceChangeListener {
 
     private val TAG = "SoundPlayer"
     private val MAX_NUMBER_STREAMS = 1
@@ -52,7 +52,7 @@ class SoundPlayer private constructor(private val applicationContext: Context) :
         Log.d(TAG, "constructor isSoundOn = $isSoundOn")
     }
 
-    override fun playSound(resId: Int) {
+    fun playSound(resId: Int) {
         if (isSoundOn) {
             Log.d(TAG, "loading sound ${applicationContext.resources.getResourceEntryName(resId)}")
             syncFinishedSoundId = soundPoolPlayer.load(applicationContext, resId, 1)
@@ -61,11 +61,11 @@ class SoundPlayer private constructor(private val applicationContext: Context) :
         }
     }
 
-    override fun playSound() {
+    fun playSound() {
         playSound(R.raw.beep_call)
     }
 
-    override fun stopSound() {
+    fun stopSound() {
         if (isPlaying && streamId != -1) {
             Log.d(TAG, "onLoadComplete failed streamId $streamId}")
             soundPoolPlayer.stop(streamId)

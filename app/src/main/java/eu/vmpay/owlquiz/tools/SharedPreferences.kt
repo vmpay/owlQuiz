@@ -1,8 +1,8 @@
-package eu.vmpay.owlquiz.utils
+package eu.vmpay.owlquiz.tools
 
 import android.content.Context
 
-class SharedPreferences private constructor(private val applicationContext: Context) : SharedPreferencesContract {
+class SharedPreferences private constructor(private val applicationContext: Context) {
     private val PREFERENCE_FILE_KEY = "eu.vmpay.owlquiz.sp"
     private val PREFERENCE_KEY_PLAYER_ID = "player_id"
 
@@ -13,16 +13,17 @@ class SharedPreferences private constructor(private val applicationContext: Cont
 
         fun getInstance(context: Context): SharedPreferences {
             return instance ?: synchronized(this) {
-                instance ?: SharedPreferences(context).also { instance = it }
+                instance
+                        ?: SharedPreferences(context).also { instance = it }
             }
         }
     }
 
-    override fun readPlayerId(): Long {
+    fun readPlayerId(): Long {
         return applicationContext.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE).getLong(PREFERENCE_KEY_PLAYER_ID, 0)
     }
 
-    override fun writePlayerId(playerId: Long) {
+    fun writePlayerId(playerId: Long) {
         val sharedPref = applicationContext.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
                 ?: return
         with(sharedPref.edit()) {
