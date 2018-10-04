@@ -18,15 +18,10 @@ class TimerFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         val binding = DataBindingUtil.inflate<FragmentTimerBinding>(layoutInflater, R.layout.fragment_timer, container, false)
-//        val binding = FragmentTimerBinding.inflate(inflater, container, false)
-        subscribeUi(binding)
-        return binding.root
-    }
-
-    private fun subscribeUi(binding: FragmentTimerBinding) {
         val factory = InjectorUtils.provideTimerViewModelFactory(requireContext())
         val viewModel = ViewModelProviders.of(this, factory)
                 .get(TimerViewModel::class.java)
         binding.viewModel = viewModel
+        return binding.root
     }
 }

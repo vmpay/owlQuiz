@@ -1,6 +1,7 @@
 package eu.vmpay.owlquiz.utils
 
 import android.content.Context
+import eu.vmpay.owlquiz.activities.account.AccountViewModelFactory
 import eu.vmpay.owlquiz.activities.timer.TimerViewModelFactory
 import eu.vmpay.owlquiz.repository.AppDatabase
 import eu.vmpay.owlquiz.repository.PlayersRepository
@@ -20,9 +21,10 @@ object InjectorUtils {
 
     fun getSoundPlayer(context: Context) = SoundPlayer.getInstance(context)
 
-    fun provideTimerViewModelFactory(
-            context: Context
-    ): TimerViewModelFactory {
-        return TimerViewModelFactory(getSoundPlayer(context))
-    }
+    fun getSharedPrefs(context: Context) = SharedPreferences.getInstance(context)
+
+    fun provideTimerViewModelFactory(context: Context) = TimerViewModelFactory(getSoundPlayer(context))
+
+    fun provideAccountViewModelFactory(context: Context) = AccountViewModelFactory(
+            getPlayersRepository(context), getTeamRepository(context), getSharedPrefs(context))
 }

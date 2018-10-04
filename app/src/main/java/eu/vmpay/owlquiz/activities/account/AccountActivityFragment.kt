@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_account.view.*
 /**
  * A placeholder fragment containing a simple view.
  */
+@Deprecated("Architecture change to MVVM")
 class AccountActivityFragment : Fragment(), AccountContract.View {
 
     private val TAG: String = "AccountActivityFragment"

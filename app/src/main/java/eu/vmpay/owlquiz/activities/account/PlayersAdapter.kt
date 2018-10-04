@@ -7,6 +7,7 @@ import eu.vmpay.owlquiz.R
 import eu.vmpay.owlquiz.repository.Player
 import kotlinx.android.synthetic.main.query_list_content.view.*
 
+@Deprecated("Architecture change to MVVM")
 class PlayersAdapter(private val playersList: MutableList<Player>, private val presenter: AccountContract.Presenter) :
         androidx.recyclerview.widget.RecyclerView.Adapter<PlayersAdapter.PlayerViewHolder>() {
 

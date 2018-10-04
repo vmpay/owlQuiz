@@ -13,6 +13,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Andrew on 12/04/2018.
  */
+@Deprecated("Architecture change to MVVM")
 class AccountPresenter(private val playersRepository: PlayersRepository,
                        private val teamsRepository: TeamsRepository,
                        private val spContract: SharedPreferencesContract,

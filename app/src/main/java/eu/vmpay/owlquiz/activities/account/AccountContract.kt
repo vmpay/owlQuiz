@@ -10,6 +10,7 @@ import eu.vmpay.owlquiz.repository.TeamRating
 /**
  * Created by Andrew on 12/04/2018.
  */
+@Deprecated("Architecture change to MVVM")
 interface AccountContract {
 
     interface View : BaseView<Presenter> {
