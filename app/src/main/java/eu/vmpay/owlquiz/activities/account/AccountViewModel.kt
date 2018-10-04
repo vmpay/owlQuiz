@@ -24,7 +24,7 @@ class AccountViewModel(
     val name = ObservableField<String>()
     val patronymic = ObservableField<String>()
     val playerId = ObservableField<String>()
-    val players = MediatorLiveData<List<Player>>()
+    var players = MediatorLiveData<List<Player>>()
 
     val player = ObservableField<Player>()
     val playersRating = ObservableField<PlayerRating>()
@@ -33,7 +33,7 @@ class AccountViewModel(
 
     val errorText = ObservableField<String>()
     val isErrorVisible = ObservableBoolean(false)
-    val snackbarMessage = SnackbarMessage()
+    var snackbarMessage = SnackbarMessage()
 
     var actualPlayerId: Long = 0
     var bookmarkedPlayerId: Long = sharedPreferences.readPlayerId()
@@ -55,7 +55,7 @@ class AccountViewModel(
         }
     }
 
-    private fun loadPlayersDetails(surname: String = "", name: String = "", patronymic: String = "") {
+    fun loadPlayersDetails(surname: String = "", name: String = "", patronymic: String = "") {
         compositeDisposable.add(playersRepository.searchForPlayer(surname, name, patronymic)
                 .observeOn(androidScheduler)
                 .subscribeOn(processScheduler)
@@ -72,7 +72,7 @@ class AccountViewModel(
         )
     }
 
-    private fun loadPlayersDetails(playerId: Long) {
+    fun loadPlayersDetails(playerId: Long) {
         compositeDisposable.add(playersRepository.getPlayer(playerId)
                 .observeOn(androidScheduler)
                 .subscribeOn(processScheduler)
@@ -142,8 +142,6 @@ class AccountViewModel(
                 }, { error ->
                     error.printStackTrace()
                     showError(R.string.server_internal_error)
-//                    this.team.set(null)
-//                    this.teamRating.set(null)
                 })
         )
     }
