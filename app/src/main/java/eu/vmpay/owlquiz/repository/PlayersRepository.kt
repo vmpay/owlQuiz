@@ -7,9 +7,19 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by Andrew on 12/04/2018.
  */
-class PlayersRepository(private val serverApi: RatingChgkService, private val playerDao: PlayerDao) {
-
+class PlayersRepository private constructor(private val serverApi: RatingChgkService, private val playerDao: PlayerDao) {
     private val TAG = "PlayersRepository"
+
+    companion object {
+        // For Singleton instantiation
+        @Volatile
+        private var instance: PlayersRepository? = null
+
+        fun getInstance(serverApi: RatingChgkService, playerDao: PlayerDao) =
+                instance ?: synchronized(this) {
+                    instance ?: PlayersRepository(serverApi, playerDao).also { instance = it }
+                }
+    }
 
     fun getPlayer(playerId: Long): Observable<List<Player>> {
         return Observable.concatArray(

@@ -1,7 +1,7 @@
 package eu.vmpay.owlquiz.activities.pref
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import eu.vmpay.owlquiz.R
 
 class PrefActivity : AppCompatActivity() {

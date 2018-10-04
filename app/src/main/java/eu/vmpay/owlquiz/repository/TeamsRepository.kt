@@ -4,8 +4,19 @@ import android.util.Log
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 
-class TeamsRepository(private val serverApi: RatingChgkService, private val teamDao: TeamDao) {
+class TeamsRepository private constructor(private val serverApi: RatingChgkService, private val teamDao: TeamDao) {
     private val TAG: String = "TeamsRepository"
+
+    companion object {
+        // For Singleton instantiation
+        @Volatile
+        private var instance: TeamsRepository? = null
+
+        fun getInstance(serverApi: RatingChgkService, teamDao: TeamDao) =
+                instance ?: synchronized(this) {
+                    instance ?: TeamsRepository(serverApi, teamDao).also { instance = it }
+                }
+    }
 
     fun getTeamById(teamId: Long): Observable<List<Team>> {
         return Observable.concatArray(

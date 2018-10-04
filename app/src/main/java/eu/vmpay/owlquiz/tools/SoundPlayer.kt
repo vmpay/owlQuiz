@@ -1,4 +1,4 @@
-package eu.vmpay.owlquiz.soundpool
+package eu.vmpay.owlquiz.tools
 
 import android.content.Context
 import android.media.AudioManager
@@ -12,7 +12,7 @@ import eu.vmpay.owlquiz.R
 /**
  * Created by Andrew on 02/04/2018.
  */
-class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCompleteListener, SoundPlayerContract {
+class SoundPlayer private constructor(private val applicationContext: Context) : SoundPool.OnLoadCompleteListener, Preference.OnPreferenceChangeListener {
 
     private val TAG = "SoundPlayer"
     private val MAX_NUMBER_STREAMS = 1
@@ -31,6 +31,18 @@ class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCom
     private var isPlaying = false
     private var isSoundOn: Boolean
 
+    companion object {
+        // For Singleton instantiation
+        @Volatile
+        private var instance: SoundPlayer? = null
+
+        fun getInstance(context: Context): SoundPlayer {
+            return instance ?: synchronized(this) {
+                instance ?: SoundPlayer(context).also { instance = it }
+            }
+        }
+    }
+
     init {
         Log.d(TAG, "init MAX_NUMBER_STREAMS $MAX_NUMBER_STREAMS STREAM_NOTIFICATION ${AudioManager.STREAM_NOTIFICATION} SOURCE_QUALITY $SOURCE_QUALITY")
         soundPoolPlayer = SoundPool(MAX_NUMBER_STREAMS, AudioManager.STREAM_NOTIFICATION, SOURCE_QUALITY)
@@ -40,7 +52,7 @@ class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCom
         Log.d(TAG, "constructor isSoundOn = $isSoundOn")
     }
 
-    override fun playSound(resId: Int) {
+    fun playSound(resId: Int) {
         if (isSoundOn) {
             Log.d(TAG, "loading sound ${applicationContext.resources.getResourceEntryName(resId)}")
             syncFinishedSoundId = soundPoolPlayer.load(applicationContext, resId, 1)
@@ -49,11 +61,11 @@ class SoundPlayer(private val applicationContext: Context) : SoundPool.OnLoadCom
         }
     }
 
-    override fun playSound() {
+    fun playSound() {
         playSound(R.raw.beep_call)
     }
 
-    override fun stopSound() {
+    fun stopSound() {
         if (isPlaying && streamId != -1) {
             Log.d(TAG, "onLoadComplete failed streamId $streamId}")
             soundPoolPlayer.stop(streamId)

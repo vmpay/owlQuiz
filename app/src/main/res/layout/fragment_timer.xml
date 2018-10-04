@@ -1,137 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:keepScreenOn="true"
-	app:layout_behavior="@string/appbar_scrolling_view_behavior"
-	tools:context=".activities.timer.MainActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-	<RadioGroup
-		android:id="@+id/radioGroup"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="8dp"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:checkedButton="@+id/rb60"
-		android:gravity="center_horizontal"
-		android:orientation="horizontal"
-		android:weightSum="3"
-		app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintHorizontal_bias="0.0"
-		app:layout_constraintStart_toStartOf="parent"
-		>
+    <data>
 
-		<RadioButton
-			android:id="@+id/rb60"
-			style="@style/RadioButton"
-			android:layout_weight="1"
-			android:text="@string/timer_60"
-			/>
+        <variable
+            name="viewModel"
+            type="eu.vmpay.owlquiz.activities.timer.TimerViewModel" />
+    </data>
 
-		<RadioButton
-			android:id="@+id/rb30"
-			style="@style/RadioButton"
-			android:layout_weight="1"
-			android:text="@string/timer_30"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.timer.MainActivity">
 
-		<RadioButton
-			android:id="@+id/rb20"
-			style="@style/RadioButton"
-			android:layout_weight="1"
-			android:text="@string/timer_20"
-			/>
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:checkedButton="@+id/rb60"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
 
-	</RadioGroup>
+            <RadioButton
+                android:id="@+id/rb60"
+                style="@style/RadioButton"
+                android:layout_weight="1"
+                android:enabled="@{viewModel.areRadioButtonsEnabled}"
+                android:onClick="@{() -> viewModel.setTimerLength(60000)}"
+                android:text="@string/timer_60" />
 
-	<TextView
-		android:id="@+id/tvHeader"
-		style="@style/CommonText"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="8dp"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:layout_marginTop="8dp"
-		android:text="@string/tv_header"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.0"
-		tools:text="Timer"/>
+            <RadioButton
+                android:id="@+id/rb30"
+                style="@style/RadioButton"
+                android:layout_weight="1"
+                android:enabled="@{viewModel.areRadioButtonsEnabled}"
+                android:onClick="@{() -> viewModel.setTimerLength(30000)}"
+                android:text="@string/timer_30" />
 
-	<ProgressBar
-		android:id="@+id/progressBar"
-		style="?android:attr/progressBarStyleHorizontal"
-		android:layout_width="300dp"
-		android:layout_height="300dp"
-		android:layout_marginBottom="8dp"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:layout_marginTop="8dp"
-		android:background="@drawable/circle_shape"
-		android:indeterminate="false"
-		android:max="60000"
-		android:progress="0"
-		android:progressDrawable="@drawable/circular_progress_bar"
-		app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintHorizontal_bias="0.494"
-		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintVertical_bias="0.449"/>
+            <RadioButton
+                android:id="@+id/rb20"
+                style="@style/RadioButton"
+                android:layout_weight="1"
+                android:enabled="@{viewModel.areRadioButtonsEnabled}"
+                android:onClick="@{() -> viewModel.setTimerLength(20000)}"
+                android:text="@string/timer_20" />
 
-	<TextView
-		android:id="@+id/tvTimer"
-		style="@style/CommonText"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="8dp"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:layout_marginTop="8dp"
-		android:text="@string/timer_60"
-		app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-		app:layout_constraintEnd_toEndOf="@+id/progressBar"
-		app:layout_constraintStart_toStartOf="@+id/progressBar"
-		app:layout_constraintTop_toTopOf="@+id/progressBar"
-		tools:text="40 s"/>
+        </RadioGroup>
 
-	<LinearLayout
-		android:id="@+id/linearLayout"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginBottom="8dp"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:gravity="center"
-		android:orientation="horizontal"
-		app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent"
-		app:layout_constraintStart_toStartOf="parent">
+        <TextView
+            android:id="@+id/tvHeader"
+            style="@style/CommonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/tv_header"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Timer" />
 
-		<Button
-			android:id="@+id/btnStart"
-			style="@style/NormalButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/btn_start"
-			tools:text="start"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/circle_shape"
+            android:indeterminate="false"
+            android:max="@{viewModel.maxProgress}"
+            android:progress="@{viewModel.currentProgress}"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.449" />
 
-		<Button
-			android:id="@+id/btnReset"
-			style="@style/NormalButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/btn_stop"
-			tools:text="stop"/>
-	</LinearLayout>
+        <TextView
+            android:id="@+id/tvTimer"
+            style="@style/CommonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:progressTime="@{viewModel.millisUntilFinish}"
+            app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            app:layout_constraintTop_toTopOf="@+id/progressBar"
+            tools:text="40 s" />
+        <!--android:text="@{viewModel.millisUntilFinish / 1000}"-->
 
-</android.support.constraint.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btnStart"
+                style="@style/NormalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{() -> viewModel.startTimer()}"
+                android:text="@{viewModel.isStarted ? @string/btn_pause : @string/btn_start}"
+                tools:text="start" />
+
+            <Button
+                android:id="@+id/btnReset"
+                style="@style/NormalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{() -> viewModel.resetTimer()}"
+                android:text="@string/btn_stop"
+                tools:text="stop" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
