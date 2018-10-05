@@ -1,11 +1,10 @@
 package eu.vmpay.owlquiz.tools
 
 import android.content.Context
+import android.preference.PreferenceManager
+import eu.vmpay.owlquiz.R
 
 class SharedPreferences private constructor(private val applicationContext: Context) {
-    private val PREFERENCE_FILE_KEY = "eu.vmpay.owlquiz.sp"
-    private val PREFERENCE_KEY_PLAYER_ID = "player_id"
-
     companion object {
         // For Singleton instantiation
         @Volatile
@@ -19,16 +18,22 @@ class SharedPreferences private constructor(private val applicationContext: Cont
         }
     }
 
-    fun readPlayerId(): Long {
-        return applicationContext.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE).getLong(PREFERENCE_KEY_PLAYER_ID, 0)
-    }
+    fun readPlayerId() = applicationContext.getSharedPreferences(getPreferencesFileKey(), Context.MODE_PRIVATE)
+            .getLong(getPLayerIdKey(), 0)
 
     fun writePlayerId(playerId: Long) {
-        val sharedPref = applicationContext.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
+        val sharedPref = applicationContext.getSharedPreferences(getPreferencesFileKey(), Context.MODE_PRIVATE)
                 ?: return
         with(sharedPref.edit()) {
-            putLong(PREFERENCE_KEY_PLAYER_ID, playerId)
+            putLong(getPLayerIdKey(), playerId)
             apply()
         }
     }
+
+    fun isNotificationSoundOn() = PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean(
+            applicationContext.getString(R.string.timer_sound_notification_key), true)
+
+    private fun getPreferencesFileKey() = applicationContext.getString(R.string.preference_file_key)
+
+    private fun getPLayerIdKey() = applicationContext.getString(R.string.preference_file_key)
 }

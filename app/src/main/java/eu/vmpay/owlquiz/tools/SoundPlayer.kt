@@ -4,7 +4,6 @@ import android.content.Context
 import android.media.AudioManager
 import android.media.SoundPool
 import android.preference.Preference
-import android.preference.PreferenceManager
 import android.util.Log
 import eu.vmpay.owlquiz.R
 
@@ -12,7 +11,7 @@ import eu.vmpay.owlquiz.R
 /**
  * Created by Andrew on 02/04/2018.
  */
-class SoundPlayer private constructor(private val applicationContext: Context) : SoundPool.OnLoadCompleteListener, Preference.OnPreferenceChangeListener {
+class SoundPlayer private constructor(private val applicationContext: Context, sharedPrefs: SharedPreferences) : SoundPool.OnLoadCompleteListener, Preference.OnPreferenceChangeListener {
 
     private val TAG = "SoundPlayer"
     private val MAX_NUMBER_STREAMS = 1
@@ -36,9 +35,9 @@ class SoundPlayer private constructor(private val applicationContext: Context) :
         @Volatile
         private var instance: SoundPlayer? = null
 
-        fun getInstance(context: Context): SoundPlayer {
+        fun getInstance(context: Context, sharedPrefs: SharedPreferences): SoundPlayer {
             return instance ?: synchronized(this) {
-                instance ?: SoundPlayer(context).also { instance = it }
+                instance ?: SoundPlayer(context, sharedPrefs).also { instance = it }
             }
         }
     }
@@ -47,8 +46,7 @@ class SoundPlayer private constructor(private val applicationContext: Context) :
         Log.d(TAG, "init MAX_NUMBER_STREAMS $MAX_NUMBER_STREAMS STREAM_NOTIFICATION ${AudioManager.STREAM_NOTIFICATION} SOURCE_QUALITY $SOURCE_QUALITY")
         soundPoolPlayer = SoundPool(MAX_NUMBER_STREAMS, AudioManager.STREAM_NOTIFICATION, SOURCE_QUALITY)
         soundPoolPlayer.setOnLoadCompleteListener(this)
-        isSoundOn = PreferenceManager.getDefaultSharedPreferences(applicationContext).getBoolean(
-                applicationContext.getString(R.string.timer_sound_notification_key), false)
+        isSoundOn = sharedPrefs.isNotificationSoundOn()
         Log.d(TAG, "constructor isSoundOn = $isSoundOn")
     }
 

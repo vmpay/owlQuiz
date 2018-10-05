@@ -1,5 +1,6 @@
 package eu.vmpay.owlquiz.repository
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -16,6 +17,7 @@ import androidx.room.PrimaryKey
  *      "comment": ""
  * }
  */
+@Keep
 @Entity(tableName = "teams")
 data class Team(
         @PrimaryKey
@@ -47,6 +49,7 @@ data class Team(
  *      "formula": "b"
  * }
  */
+@Keep
 @Entity(tableName = "team_rating", primaryKeys = ["idrelease", "idteam"])
 data class TeamRating(
         @ColumnInfo(name = "idrelease")
