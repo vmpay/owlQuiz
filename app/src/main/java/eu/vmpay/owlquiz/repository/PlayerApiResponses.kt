@@ -1,5 +1,6 @@
 package eu.vmpay.owlquiz.repository
 
+import androidx.annotation.Keep
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -19,6 +20,7 @@ import androidx.room.PrimaryKey
  *  }
  * ]
  */
+@Keep
 @Entity(tableName = "players")
 data class Player(
         @PrimaryKey
@@ -49,6 +51,7 @@ data class Player(
  *      "current_items": "1-1000"
  * }
  */
+@Keep
 data class PlayerSearch(
         val items: List<Player>,
         val total_items: String,
@@ -65,6 +68,7 @@ data class PlayerSearch(
  *      "tournament_count_total": "35"
  * }
  */
+@Keep
 @Entity(tableName = "player_rating", primaryKeys = ["idplayer", "idrelease"])
 data class PlayerRating(
         @ColumnInfo(name = "idplayer")
@@ -91,6 +95,7 @@ data class PlayerRating(
  *      "added_since": "2018-08-08"
  * }
  */
+@Keep
 @Entity(tableName = "player_team", primaryKeys = ["idseason", "idplayer", "idteam"])
 data class PlayerTeam(
         @ColumnInfo(name = "idseason")

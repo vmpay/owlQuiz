@@ -1,5 +1,6 @@
 package eu.vmpay.owlquiz.repository
 
+import eu.vmpay.owlquiz.BuildConfig
 import io.reactivex.Observable
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -34,7 +35,8 @@ interface RatingChgkService {
             val interceptor = HttpLoggingInterceptor()
             interceptor.level = HttpLoggingInterceptor.Level.BODY
             val httpClient = OkHttpClient.Builder()
-            httpClient.addInterceptor(interceptor)
+            if (BuildConfig.DEBUG)
+                httpClient.addInterceptor(interceptor)
             val retrofit = Retrofit.Builder()
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
