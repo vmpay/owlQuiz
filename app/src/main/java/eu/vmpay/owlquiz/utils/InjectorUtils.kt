@@ -20,7 +20,7 @@ object InjectorUtils {
     fun getTeamRepository(context: Context) = TeamsRepository.getInstance(
             RatingChgkService.getInstance(), AppDatabase.getInstance(context).teamDao())
 
-    fun getSoundPlayer(context: Context) = SoundPlayer.getInstance(context)
+    fun getSoundPlayer(context: Context) = SoundPlayer.getInstance(context, getSharedPrefs(context))
 
     fun getSharedPrefs(context: Context) = SharedPreferences.getInstance(context)
 
