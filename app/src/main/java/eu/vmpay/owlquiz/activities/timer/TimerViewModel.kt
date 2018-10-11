@@ -18,7 +18,7 @@ class TimerViewModel(private val soundPlayer: SoundPlayer) : ViewModel() {
 
     private val TICK: Long = 20
     var tenSecondSoundPlayed = false
-    lateinit var timer: CountDownTimer
+    var timer: CountDownTimer = resetTimerObject()
 
     fun setTimerLength(millis: Int) {
         currentProgress.set(0)
@@ -62,7 +62,7 @@ class TimerViewModel(private val soundPlayer: SoundPlayer) : ViewModel() {
             override fun onTick(millisUntilTimerFinished: Long) {
                 if (millisUntilTimerFinished / (2 * TICK) <= 1L) {
                     Log.d(TAG, "finished $millisUntilTimerFinished")
-                    millisUntilFinish.set(0)
+                    millisUntilFinish.set(maxProgress.get())
                     isStarted.set(false)
                     currentProgress.set(maxProgress.get())
                     areRadioButtonsEnabled.set(true)
