@@ -32,7 +32,7 @@ jobs:
             - ~/.gradle/wrapper
       - run:
           name: Run JVM Tests
-          command: ./gradlew test -i
+          command: ./gradlew test
       - run:
           name: Run Lint
           command: ./gradlew lint
